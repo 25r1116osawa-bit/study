@@ -5,37 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>学習ページ</title>
   <link rel="stylesheet" href="授業用.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <!-- サイドバー -->
-  <aside class="sidebar">
-    <h3>サイドバー</h3>
+    <!-- サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-header">📘 Learn Panel</div>
 
-    <ul class="parent">
-      <li>
-        Markdown 説明
-        <ul class="child">
-          <li data-file="要素.md">グローバルナビゲーション</li>
-          <li data-file="color.md">color</li>
+      <div class="sidebar-body">
+        <ul class="parent">
+          <li>
+            HTML
+            <ul class="child">
+              <li data-file="基本タグ.md">基本タグ</li>
+              <li data-file="グローバルナビ.md">グローバルナビ</li>
+            </ul>
+          </li>
         </ul>
-      </li>
-    </ul>
 
-  </aside>
+        <ul class="parent">
+          <li>
+            VSCode
+            <ul class="child">
+              <li data-file="live share.md">Live Share</li>
+              <li data-file="b.md">b</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </aside>
 
-  <!-- 右側 表示エリア -->
-  <main class="content" id="content-area">
-    左の項目をクリックすると説明が表示されます。
-  </main>
+    <!-- コンテンツ -->
+    <main class="content markdown-body" id="content-area">
+      左の項目をクリックすると説明が表示されます。
+    </main>
 
-</div>
+  </div>
 
-<!-- Markdown 変換ライブラリ -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="授業用.js"></script>
-
+  <script src="main.js"></script>
+  <!-- Markdown 変換ライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- 既存の授業用.js を使用 -->
+  <script src="授業用.js"></script>
 </body>
 </html>
