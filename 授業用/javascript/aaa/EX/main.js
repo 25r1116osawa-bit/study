@@ -9,17 +9,7 @@ function introduction() {
     outName.textContent = inName.value
     
     // メッセージの生成
-    msg.textContent = '私の名前は' + inName.value + 'です。'
-   
-}
-
-function introduction() {
-    // 名前の情報を表示
-    // inputタグの値の取得は.valueを利用する
-    outName.textContent = inName.value
-    
-   
-    // メッセージの生成
     msg.innerHTML += '私の名前は' + inName.value + 'です。<br>'
    
 }
+
