@@ -57,23 +57,32 @@ function changeSelect(){
     }
     output.innerHTML += "<br>"
 
-
-     // switch-case文
-     // break を書かないと、その後のケースが**連続して実行（フォールスルー）**されます。
-    let num = 1;
-
-switch (opt) {
-  case 1:
-    output.innerHTML +="1が選ばれました";
-    break;
-  case 2:
-    output.innerHTML +="2が選ばれました";
-    break;
-  case 3:
-    output.innerHTML +="3が選ばれました";
-    break;
-  default:
-    output.innerHTML +="4が選ばれました";
-}
-
+    // switch-case文
+    // ()内には検索する対象の変数を入れる。(key)
+    // もしなかった場合はdefaultへジャンプする
+    // breakでブロックを抜ける(switchブロックを抜ける)
+    switch (variable) {
+        case '0':
+        case '1':
+        case '2':
+        case '15':
+        case '100':
+            output.innerHTML += '変数：数値'
+            break;
+        case 'A':
+        case 'a':
+            output.innerHTML += '変数：A'
+            break;
+        case 'B':
+        case 'b':
+            output.innerHTML += '変数：A'
+            break;
+        case 'C':
+        case 'c':
+            output.innerHTML += '変数：A'
+            break;
+        default:
+            output.innerHTML += '変数：空白'
+            break;
+    }
 }
