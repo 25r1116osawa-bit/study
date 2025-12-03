@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挨拶</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="innumber1" >
+    </div>
+    
+    <div>
+        <input type="text" id="innumber2">
+    </div>
+
+    <input type="button" value="加算" onclick="btn(PLUS)">
+    <input type="button" value="減算" onclick="btn(MINUS)">
+    <input type="button" value="乗算" onclick="btn(ZYOUSAN)">
+    <input type="button" value="除算" onclick="btn(WARIZAN)">
+    <input type="button" value="剰余残" onclick="btn(ZYOUYO)">
+
+
+    <div>
+       答え：<span id="output"></span>
+    </div>
+    <script src="./main.js"></script>
+</body>
+</html>
