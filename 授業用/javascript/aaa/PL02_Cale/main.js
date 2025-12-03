@@ -3,9 +3,6 @@ let innumber1 = document.getElementById('innumber1');
 let innumber2 = document.getElementById('innumber2');
 let counter = 0
 
-
-
-
 const PLUS = 1
 const MINUS = 2
 const ZYOUSAN = 3
