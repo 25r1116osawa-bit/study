@@ -8,192 +8,124 @@ let output5 = document.getElementById('output5')
 // 条件式：条件式の判定がtrueだったとき、ブロックが実行される
 // 増分式：ブロック実行後に実行され、後に条件式で判定を行う。
 
-//課題1 
 
-for (let index = 1; index < 10; index++){
-    for(let j=1; j < 10; j++){
-        box = index * j
-        output1.innerHTML += box + " "
+//課題1 
+//for (let index = 1; index < 10; index++){
+//    for(let j=1; j < 10; j++){
+//        box = index * j
+//        output1.innerHTML += box + " "
+//    }
+//}
+
+// ansText = ''
+// 先生の回答
+let ansText = ''
+for (let num1 = 1; num1 <= 9; num1++) {
+    for (let num2 = 1; num2 <= 9; num2++) {
+        // 計算結果の出力
+        ansText += num1 * num2 + ','
     }
 }
 
-/*
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML += " " + (1 * index) 
-}
+// 出力部分
+output1.textContent += ansText
 
 
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (2 * index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (3 * index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (4 * index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (5 * index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (6 * index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (7* index) 
-}
-
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (8* index) 
-}
-for (let index = 1; index < 10; index++) {
-     output1.innerHTML +=" " + (9* index) 
-}
-*/
 
 // 課題2
+// 分からなかったこと：数字を文字に変換すること
+// 解決策：https://qiita.com/ndj/items/ccc1b36933fc52483018 に変換した。
 
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  1*" + Number(index) + "="  +Number(1 * index) + "<br>"
+//for (let index = 1; index < 10; index++){
+//    for(let j=1; j < 10; j++){
+//        box = index * j
+//           output2.innerHTML += String(index) + "*" + String(j) + "=" + box +" " +"<br>"
+//    }
+//}
 
-}
+// 計算部分
+// テンプレートリテラルを使えば、''の中に${}をいれるだけで変数を呼び出すことができる。
 
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  2*" + Number(index) + "="  +Number(2 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  3*" + Number(index) + "="  +Number(3 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  4*" + Number(index) + "="  +Number(4 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  5*" + Number(index) + "="  +Number(5 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  6*" + Number(index) + "="  +Number(6 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  7*" + Number(index) + "="  +Number(7 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  8*" + Number(index) + "="  +Number(8 * index) + "<br>"
-
-}
-
-for (let index = 1; index < 10; index++) {
-     output2.innerHTML += "  9*" + Number(index) + "="  +Number(9 * index) + "<br>"
-
-}
-
-
-/*
-const kuku = [1,2,3,4,5,6,7,8,9];
-let allRows = [];
-
-
-for (let dan = 1; dan <= 9; dan++) {
-    let row = kuku.map(e => e * dan);
-    allRows.push(row);
-}
-
-// 表示
-for (let row of allRows) {
-    output3.innerHTML += row.join(" ") + "<br>"; 
-}
-*/
-/*
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*1)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*2)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*3)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*4)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*5)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*6)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*7)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*8)] 
-}
-
-output3.innerHTML += "<br>"
-for (let index = 0; index < kuku.length; index++) {
-    const element = kuku[index];
-    output3.innerHTML += [(" " + element*9)] 
-}
-
-*/
-for (let dan = 1; dan <= 9; dan++) {
-    for (let i = 1; i <= 9; i++) {
-        output3.innerHTML += (dan * i) + " ";
+ansText = ''
+for (let num1 = 1; num1 <= 9; num1++) {
+    for (let num2 = 1; num2 <= 9; num2++) {
+        // 計算結果の出力
+        ansText += `${num1}×${num2}=${num1 * num2}<br>`
     }
-    output3.innerHTML += "<br>";
 }
 
+// 出力部分
+output2.innerHTML += ansText
 
-for (let dan = 1; dan <= 9; dan++) {
-    for (let i = 1; i <= 9; i++) {
-        output4.innerHTML += (dan * i) + " ";
+
+
+
+// 課題3 
+// やりたいこと：1の段の出力が終わり次第、改行後に2行目が実行される。
+
+ansText = ''
+for (let num1 = 1; num1 <= 9; num1++) {
+    for (let num2 = 1; num2 <= 9; num2++) {
+        // 計算結果の出力
+        ansText += num1 * num2 + ' '
     }
-    output4.innerHTML += "<br>";
+    ansText += '<br>'
 }
 
+// 出力部分
+output3.innerHTML += ansText
 
 
-for (let dan = 1; dan <= 9; dan++) {
-    for (let i = 1; i <= 9; i++) {
-        output5.innerHTML += (dan * i) + " ";
+
+// 課題4
+// htmlで整える javascriptで整える
+// 一桁の場合と二けたの場合で分岐すればいい。
+
+
+
+
+// 計算部分
+ansText = ''
+for (let num1 = 1; num1 <= 9; num1++) {
+    for (let num2 = 1; num2 <= 9; num2++) {
+        let ans = num1 * num2
+        if(ans <= 9){
+            // 計算結果の出力 &nbsp は半角スペース
+            ansText += ans + '&nbsp&nbsp&nbsp'
+        }else{
+            // 計算結果の出力
+            ansText += ans + '&nbsp'
+        }
     }
-    output5.innerHTML += "<br>";
+    ansText += '<br>'
 }
+
+// 出力部分
+output4.innerHTML += ansText
+
+
+
+
+// 課題5
+
+// 計算部分
+// 計算部分
+let htmlText = ''
+htmlText += '<table>'
+for (let i = 0; i <= 9; i++) {
+    htmlText += `<th>${i}</th>`
+}
+let hnum = 1
+for (let num1 = 1; num1 <= 9; num1++) {
+    htmlText += '<tr>'
+    htmlText += `<th>${hnum++}</th>`
+    for (let num2 = 1; num2 <= 9; num2++) {
+        let ans = num1 * num2
+        // 計算結果の出力
+        htmlText += `<td>${ans}</td>`
+    }
+    htmlText += '</tr>'
+}
+htmlText += '</table>'
+// 出力部分
+output5.innerHTML += htmlText

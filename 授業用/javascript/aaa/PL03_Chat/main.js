@@ -11,15 +11,20 @@ function btn(mode){
     switch (mode) {
         case PLAYERA:
             textarea = inputtext.value;
+            inputtext.value = ''
+            textarea = `<span style="color:red;">${textarea}</span>`;
             break;
 
         case PLAYERB:
             textarea = inputtext.value;
+            inputtext.value = ' '
+            textarea = `<span style="color:blue;">${textarea}</span>`;
             break;
 
         case RESETBUTTN:
-            textarea = "";
-            inputtext.value = ""; // 入力欄もリセット
+            textarea = " "
+            inputtext.value = " " // 入力欄もリセット
+            output.innerHTML = " "
             break;
 
         default:
