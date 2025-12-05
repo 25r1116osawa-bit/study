@@ -16,10 +16,10 @@ function click3(){
     // idがp1,p2のtextContentに文字を代入
     document.getElementById('p1').textContent='1つ目の内容'
     document.getElementById('p2').textContent='2つ目の内容'
+    console.log();
 }
 
 
 //関数の書き方
 //function 関数名() {// // 処理}
 
-//
