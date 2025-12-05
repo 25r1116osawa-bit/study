@@ -7,8 +7,8 @@ console.log(a + b);
 
 
 問題2 let name = "Taro";
-console.log("Hello, " + name + "!");
-正解=Hello, Taro!
+console.log("Hello, " + name);
+正解=Hello, Taro
 
 
 問題3（if文）
