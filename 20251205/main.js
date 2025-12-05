@@ -1,5 +1,5 @@
 // コンソール上におはようと表示。
-
+/*
 console.log('おはようございます');
 
 
@@ -128,14 +128,23 @@ let str ="小林 "
 aisatu(str);
 
 
+
 // 戻り値 引数 の違いを理解する。
 function aisatu(){
     return 2;
 }
+console.log(aisatu(5));
+
+*/
+
+
+function aisatu(num1){
+    return num1;// 戻り値 引数 の違いを理解する。
+
+}
+// aisatu(1,2);==1+2=3
 
 console.log(aisatu(2));
-
-
 
 
 
@@ -144,6 +153,8 @@ function aisatu(num1,num2){
     return (num1 + num2);// 戻り値 引数 の違いを理解する。
 
 }
+// aisatu(1,2);==1+2=3
+
 console.log(aisatu(110,200));
 
 
@@ -151,9 +162,15 @@ console.log(aisatu(110,200));
 
 
 
+
+
+
+
+
 function aisatu(num1,num2){
-    let ss = (num1 + num2);
-    return ss;
+    return  (num1 + num2);
+    
 }
 let result = aisatu(110,120)
 console.log(result);
+
