@@ -33,3 +33,17 @@ ID はページ内で一意（同じ ID は1つしか使えない）
 
 小文字と大文字を区別する → getElementById が正しい
 ```
+
+```
+function handleData(data) { //変換されたデータが data に入る
+  let members = data.members;  // .membersデータを入れる箱、値を保持する
+  showMembers(members);        // 別の関数で画面に出す
+}
+
+function handleData(data) { //変換されたデータが data に入る
+  showMembers(members);        // 別の関数で画面に出す
+}
+上記は全く同じ動きをする。
+「箱に一旦入れるか」「直接渡すか」の違いだけ
+```
+

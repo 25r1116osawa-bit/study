@@ -1,13 +1,22 @@
+// ローカル変数？
+// 実引数 ?
+// 仮引数 ?
+// fanctionの中ではプログラムが動かない
+// グローバル変数
+// 
+
+
 // コンソール上におはようと表示。
-/*
+
+
+
 console.log('おはようございます');
-
-
 let num = 2;
 
 
 // num は0より小さいですか？　
 console.log(num < 0);
+
 
 // num は0より大きいですか？
 console.log(num > 0);
@@ -135,8 +144,6 @@ function aisatu(){
 }
 console.log(aisatu(5));
 
-*/
-
 
 function aisatu(num1){
     return num1;// 戻り値 引数 の違いを理解する。
@@ -156,13 +163,6 @@ function aisatu(num1,num2){
 // aisatu(1,2);==1+2=3
 
 console.log(aisatu(110,200));
-
-
-
-
-
-
-
 
 
 
