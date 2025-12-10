@@ -174,3 +174,29 @@ function aisatu(num1,num2){
 let result = aisatu(110,120)
 console.log(result);
 
+// Map を作る
+const fruitMap = new Map();
+
+// 果物と個数を入れる
+fruitMap.set("りんご", 3);
+fruitMap.set("みかん", 5);
+fruitMap.set("バナナ", 2);
+
+// コンソールに全部出力
+console.log("🍇 果物の数を表示 🍇");
+for (const [key, value] of fruitMap) {
+  console.log(`${key} は ${value} 個あります`);
+}
+
+// りんごの数だけを取り出す
+console.log(`\nりんごは ${fruitMap.get("りんご")} 個あります`);
+
+// みかんがあるかチェック
+console.log(`みかんはある？ ${fruitMap.has("みかん")}`);
+
+// バナナを取り除く
+fruitMap.delete("バナナ");
+console.log("\nバナナを取り除いたあと:");
+for (const [key, value] of fruitMap) {
+  console.log(`${key} は ${value} 個あります`);
+}
