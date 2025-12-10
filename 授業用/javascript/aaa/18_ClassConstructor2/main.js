@@ -39,9 +39,12 @@ class Fan {
 
 }
 
+
+
 // インスタンス化
 let fan01 = new Fan(output)
 let fan02 = new Fan(output,7)
+
 
 output.innerHTML += fan01.swing + '<br>'
 // fan01のメソッドの呼び出し
