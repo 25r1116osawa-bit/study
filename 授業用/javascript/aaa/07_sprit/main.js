@@ -9,7 +9,7 @@ let variable = ""
 function changeSelect(){
     // ドロップダウンメニューの値を取得
     variable = opt.value
-    output.innerHTML = ""
+    output.innerHTML += `${variable}`&"<br>"
 
     // if文
     // ブロックで囲った処理を実行するかどうか？の分岐を行う構文

@@ -1,0 +1,143 @@
+/* CSSファイル: styles.css (加湿器本体風デザイン) */
+
+:root {
+    /* 色の変数（テーマカラー）を定義しておくと、変更が楽になります */
+    --main-color: #5bb4e2;   /* 加湿器のテーマカラー（水色） */
+    --secondary-color: #f0f0f0; /* 本体ベースの色 */
+    --text-color: #333;
+    --shadow-light: #ffffff;
+    --shadow-dark: #b8b8b8;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #e0e5ec; /* 全体の背景色を少し暗くして本体を浮き立たせる */
+}
+
+/* ----------------------------------------------------- */
+/* 1. 加湿器本体のコンテナデザイン */
+/* ----------------------------------------------------- */
+.humidifier-controller {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 20px; /* 角を大きく丸くする */
+    width: 380px;
+    
+    /* 本体が少し浮き上がって見えるような立体的な影（ネオモーフィズム風）*/
+    box-shadow: 
+        8px 8px 16px var(--shadow-dark), 
+        -8px -8px 16px var(--shadow-light);
+}
+
+h2 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 25px;
+    font-size: 1.5em;
+}
+
+/* ----------------------------------------------------- */
+/* 2. ディスプレイ（状態表示パネル）のデザイン */
+/* ----------------------------------------------------- */
+.display-area {
+    background-color: #2c3e50; /* 暗い液晶画面のイメージ */
+    color: #00ff00; /* レトロなデジタル表示の色 */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    
+    /* 画面が本体に少し埋め込まれているような影 */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Courier New', monospace;
+}
+
+.display-area p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+/* 状態表示の色 */
+.status-on {
+    color: #00ff00; /* ONは明るい緑 */
+    font-weight: bold;
+}
+.status-off {
+    color: #ff3333; /* OFFは赤 */
+    font-weight: bold;
+}
+.status-locked {
+    color: #ffcc00; /* ロックは黄色 */
+    font-weight: bold;
+}
+.status-unlocked {
+    color: #999;
+}
+
+/* 警告ランプ風デザイン */
+#waterAlert {
+    font-size: 1.2em;
+    text-align: center;
+}
+.alert-hidden {
+    display: none;
+}
+.alert-visible {
+    color: #ff3333; 
+    font-weight: bold;
+    animation: blink 0.8s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.2; }
+}
+
+/* ----------------------------------------------------- */
+/* 3. ボタン（操作パネル）のデザイン */
+/* ----------------------------------------------------- */
+.controls-area {
+    display: grid;
+    /* 2列に分けて、主要なボタンを目立たせる */
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px;
+}
+
+.control-button {
+    padding: 15px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+    transition: all 0.1s ease;
+
+    /* ボタンが浮き上がっている状態の影 */
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+}
+
+/* プライマリーボタン（電源など重要なもの） */
+.primary {
+    background-color: var(--main-color);
+    color: white;
+    /* プライマリーボタンは縦に長くして目立たせる */
+    grid-row: span 2; 
+    font-size: 1.1em;
+}
+
+/* マウスオーバー時のエフェクト */
+.control-button:hover {
+    opacity: 0.9;
+}
+
+/* ボタンが押されたとき（クリック時）のエフェクト */
+.control-button:active {
+    /* 影を inset にして、ボタンが凹んでいるように見せる */
+    box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+    transform: translateY(1px); /* わずかに下に移動させる */
+}

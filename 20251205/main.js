@@ -112,12 +112,12 @@ document.addEventListener("DOMContentLoaded", function () { // ここも従来�
 // 関数宣言のため、変数の宣言は不要である。
 // 関数宣言をすると、自動的に その関数名 (aisatu) が変数のように扱えるオブジェクトとしてメモリに登録 されます。
 
-function aisatu(){
+function test(){
     console.log("ごめんなさい")
     console.log("ありがとう")
 }
 
-aisatu();
+test();
 
 
 
@@ -125,34 +125,24 @@ aisatu();
 // イメージ   function aisatu(name)
 // aisatu("大澤")をnameに送る。
 
-function aisatu(name){
+function namae(name){
     console.log("私の名前は"+name);
 }
 
-aisatu("大澤");
+namae("大澤");
 
 
 
 let str ="小林 "
-aisatu(str);
+console.log(str);
 
 
 
 // 戻り値 引数 の違いを理解する。
-function aisatu(){
-    return 2;
+function modori(){
+    return 123
 }
-console.log(aisatu(5));
-
-
-function aisatu(num1){
-    return num1;// 戻り値 引数 の違いを理解する。
-
-}
-// aisatu(1,2);==1+2=3
-
-console.log(aisatu(2));
-
+console.log(modori());
 
 
 

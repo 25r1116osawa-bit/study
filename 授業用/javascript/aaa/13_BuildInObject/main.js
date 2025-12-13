@@ -79,33 +79,3 @@ let mm = Math.floor(day7 / 1000 / 60 % 60).toString().padStart(2,'0')
 let ss = Math.floor(day7 / 1000 % 60 ).toString().padStart(2,'0')
 output.innerHTML += `${hh}:${mm}:${ss}<br>`
 
-const pikachu = {
-  name: "ピカチュウ",      // 性格（データ）
-  type: "でんき",
-
-  // できること（メソッド）
-  attack: function() {
-    output.innerHTML += "ピカチュウは10まんボルトを使った！<br>";
-  }
-};
-
-output.innerHTML += pikachu.name + "（タイプ：" + pikachu.type + "）<br>";
-pikachu.attack()
-
-
-
-class Pokemon {
-  constructor(name, type) {
-    this.name = name;
-    this.type = type;
-  }
-
-  attack() {
-    return `${this.name}は10まんボルトを使った！`;
-  }
-}
-
-const pikachu1 = new Pokemon("ピカチュウ", "でんき");
-
-output.innerHTML += `${pikachu.name}（タイプ：${pikachu.type}）<br>`;
-output.innerHTML += pikachu1.attack() + "<br>";
