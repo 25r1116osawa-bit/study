@@ -54,7 +54,7 @@ output.innerHTML += '<br>'
 let runnerA = 0
 let runnerB = 100
 while (runnerA < runnerB) {
-    runnerA += 3
+    runnerA += 10
     runnerB += 2
     output.innerHTML += `A${runnerA}:B${runnerB}<br>`
     //ゴール
@@ -63,10 +63,6 @@ while (runnerA < runnerB) {
         break
     }
 }
-
-
-
-
 
 
 // continue文

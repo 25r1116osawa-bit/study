@@ -21,5 +21,5 @@ function click3(){
 
 
 //関数の書き方
-//function 関数名() {// // 処理}
+//function 関数名() {処理}
 
