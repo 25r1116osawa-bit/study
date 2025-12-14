@@ -6,6 +6,12 @@ let waterAlert = document.getElementById("waterAlert")
 let lockStatus = document.getElementById("lockStatus")
 let output = document.getElementById("output")
 
+
+let pushPowerButton = document.getElementById("pushPowerButton");
+let switchModeButton = document.getElementById("switchModeButton");
+let callWaterButton = document.getElementById("callWaterButton");
+let lockChildButton = document.getElementById("lockChildButton");
+
 // クラスの宣言
 class HumidifierControler {
     // コンストラクタ(メソッド)の宣言
@@ -16,6 +22,7 @@ class HumidifierControler {
         this.tankCapacity = 0
         this.powerButton = 0
         this.humidificationModes = 0
+        this.childLock = 0
         this.output = output
     }
 
@@ -58,17 +65,27 @@ class HumidifierControler {
 
     // 「水を入れてね」とランプでお知らせする機能
     callWater (){
-        if(this.timerStatus == 0 , this.powerButton == 1){
+        if(this.tankCapacity == 0 && this.powerButton == 1){
         alert('水を入れてね')
         }
     }
+
+
     // 子どもがボタンを押しても動かないようにする、安全用の機能
     lockChild (){
-        
+    if (this.childLock === 0) {
+        this.childLock = 1;
+        lockStatus.innerHTML = "チャイルドロック：ON";
+    } else {
+        this.childLock = 0;
+        lockStatus.innerHTML = "チャイルドロック：OFF";
     }
+}
+    
 
     // 時間が来たら自動で電源が切れる機能（2時間、4時間）ボタンは一つ
     switchTimer(){
+        countd
 
     }
 }
@@ -76,11 +93,12 @@ class HumidifierControler {
 let Humidifier = new HumidifierControler()
 
 
+
 pushPowerButton.addEventListener('click', () => Humidifier.pushPower());
 switchModeButton.addEventListener('click', () => Humidifier.switchMode());
 // 水が0のときにという設定が必要
 callWaterButton.addEventListener('click', () => Humidifier.callWater());
-
+lockChildButton.addEventListener('click', () => Humidifier.lockChild());
 
 
 
