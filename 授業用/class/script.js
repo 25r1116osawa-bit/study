@@ -41,6 +41,7 @@ class HumidifierControler {
 
     // 弱・中・強を選んだり、状況に合わせて加湿の強さを変える（弱中強ボタンは一つ）
     // 戻り値：number
+ /*
     switchMode (){
         if(this.powerButton == 1){
     if(this.humidificationModes == 0){ 
@@ -61,6 +62,25 @@ class HumidifierControler {
         return;
     }
 }
+}
+*/
+    switchMode (){
+        switch(this.humidificationModes){
+        case 0 :
+        modeStatus.innerHTML = '弱';
+        return this.humidificationModes = 1;
+        
+
+        case 1:
+        modeStatus.innerHTML = '中';
+        return this.humidificationModes = 2;
+        
+
+        default:
+        modeStatus.innerHTML = '強';
+        return this.humidificationModes = 0;
+        
+        }
 }
 
     // 「水を入れてね」とランプでお知らせする機能
