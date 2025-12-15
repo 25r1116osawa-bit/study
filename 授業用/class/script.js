@@ -43,7 +43,7 @@ class HumidifierControler {
     // 戻り値：number
  /*
     switchMode (){
-        if(this.powerButton == 1){
+        if(this.powerButton == 1 && this.childLock == 0){
     if(this.humidificationModes == 0){ 
         modeStatus.innerHTML = '弱';
         this.humidificationModes = 1;
@@ -64,7 +64,9 @@ class HumidifierControler {
 }
 }
 */
+    
     switchMode (){
+        if(this.powerButton == 1 && this.childLock == 0 ){
         switch(this.humidificationModes){
         case 0 :
         modeStatus.innerHTML = '弱';
@@ -82,6 +84,8 @@ class HumidifierControler {
         
         }
 }
+    }
+    
 
     // 「水を入れてね」とランプでお知らせする機能
     callWater (){
