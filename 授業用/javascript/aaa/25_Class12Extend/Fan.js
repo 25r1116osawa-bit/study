@@ -1,6 +1,5 @@
 // クラスの宣言
 // 標準モジュール出力
-// 外部にmoduleを出す際の記載 export default
 export default class Fan {
 
     // クラスプロパティ(クラスの変数)

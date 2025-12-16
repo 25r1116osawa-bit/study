@@ -15,6 +15,14 @@ let lockChildButton = document.getElementById("lockChildButton");
 // クラスの宣言
 class HumidifierControler {
     // コンストラクタ(メソッド)の宣言
+    colorCode
+    timerOff
+    tankCapacity
+    #powerButton
+    humidificationModes
+   // childLock
+    output
+
     constructor(){
         // 各値を初期化
         this.colorCode = 0
@@ -22,9 +30,11 @@ class HumidifierControler {
         this.tankCapacity = 0
         this.powerButton = 0
         this.humidificationModes = 0
-        this.childLock = 0
+      // this.childLock = 0
         this.output = output
     }
+
+    
 
     // メソッド(関数)
     // 加湿器の電源を「つける」または「消す」動きをする機能 (切/入ボタンは1つ)
@@ -109,10 +119,36 @@ class HumidifierControler {
 
     // 時間が来たら自動で電源が切れる機能（2時間、4時間）ボタンは一つ
     switchTimer(){
-        countd
+        if(this.powerButton == 1 && this.timerOff == 0 ){
+        const fn = function() {
+        timerStatus.innerHTML ="2時間経過";
+        this.powerButton = 0
+        powerStatus.innerHTML = "オフ"
+        this.timerOff = 1
+        };
+        const tm = 1000
+        //((10000*6)*60)*2
+        setTimeout(fn,tm);
+        this.timerOff = 1
 
-    }
+        } else if (this.powerButton == 1 && this.timerOff == 1 ) {
+        const fn = function() {
+        timerStatus.innerHTML ="4時間経過";
+        this.powerButton = 0
+        powerStatus.innerHTML = "オフ"
+        this.timerOff = 2
+        };
+        const tm = 2000
+        //((10000*6)*60)*4
+        setTimeout(fn,tm);
+        this.timerOff = 0
+        } else{
+        timerStatus.innerHTML = "あいうえお";
+        }           
 }
+}
+
+
 
 let Humidifier = new HumidifierControler()
 
@@ -123,7 +159,8 @@ switchModeButton.addEventListener('click', () => Humidifier.switchMode());
 // 水が0のときにという設定が必要
 callWaterButton.addEventListener('click', () => Humidifier.callWater());
 lockChildButton.addEventListener('click', () => Humidifier.lockChild());
+switchTimerButton.addEventListener('click', () => Humidifier.switchTimer());
 
 
 
-
+console.log(Humidifier.powerButton)
