@@ -97,4 +97,44 @@ export default class Fan {
         output.innerHTML += '首振りボタンが押されました。' + '<br>'
         this.#swing = true
     }
+
+    // 風を送る
+    blowing(){
+        console.log(this.power,this.windPower)
+        if(this.power && this.windPower != Fan.POWER_STATUS.OFF){
+            output.innerHTML += `${this.windPower}風が送られています。<br>`
+            return true
+        }else{
+            output.innerHTML += `電源が入っていません。<br>`
+            return false
+        }
+    }
+
+    // 電源ボタン
+    pressPowerButton(){
+        console.log('power btn')
+        this.power = !this.power
+    }
+
+    // 風力変更ボタン
+    changeWindPower(){
+        console.log('windpow btn')
+        switch (this.windPower){
+            case Fan.POWER_STATUS.OFF:
+                this.windPower = Fan.POWER_STATUS.P1
+                break;
+            case Fan.POWER_STATUS.P1:
+                this.windPower = Fan.POWER_STATUS.P2
+                break;
+            case Fan.POWER_STATUS.P2:
+                this.windPower = Fan.POWER_STATUS.P3
+                break;
+            case Fan.POWER_STATUS.P3:
+                this.windPower = Fan.POWER_STATUS.OFF
+                break;
+            default:
+                break;
+        }
+    }
+
 }
