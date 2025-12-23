@@ -1,4 +1,4 @@
-const message: string = "HelloWorld"
+const message: string = "Hello WWWcdWorld"
 console.log(message)
 // tsc script.ts　　ｊｓ生成　ｔｓは人間語
 // node script.js 　ｊｓ実行　ｊｓは機械語
