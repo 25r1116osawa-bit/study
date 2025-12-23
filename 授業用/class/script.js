@@ -1,3 +1,6 @@
+import BaseClass from "../comon/BaseClass.js"
+
+
 // 出力先の要素を習得
 let powerStatus = document.getElementById("powerStatus")
 let modeStatus = document.getElementById("modeStatus")
@@ -13,14 +16,14 @@ let callWaterButton = document.getElementById("callWaterButton");
 let lockChildButton = document.getElementById("lockChildButton");
 
 // クラスの宣言
-class HumidifierControler {
+export default class  HumidifierControler extends BaseClass {
     // コンストラクタ(メソッド)の宣言
     colorCode
     timerOff
     tankCapacity
-    #powerButton
+    powerButton
     humidificationModes
-    // childLock
+    //childLock
     output
 
     constructor() {
@@ -30,94 +33,107 @@ class HumidifierControler {
         this.tankCapacity = 0
         this.powerButton = 0
         this.humidificationModes = 0
-        // this.childLock = 0
         this.output = output
     }
 
     // メソッド(関数)
     // 加湿器の電源を「つける」または「消す」動きをする機能 (切/入ボタンは1つ)
     // 戻り値：boolean
+    // pushPower (){   
+    //     if(this.powerButton == 0 ){
+    //         this.powerButton = 1
+    //         powerStatus.innerHTML = "オン"
+    //     }else{
+    //         this.powerButton = 0
+    //         powerStatus.innerHTML = "オフ"
+    //     }
+    // }
+    // pushPower 大城が変更
+    // メソッド(関数)
+    // 加湿器の電源を「つける」または「消す」動きをする機能 (切/入ボタンは1つ)
+    // 戻り値：boolean
+
+
     pushPower() {
-        if (this.powerButton == 0) {
-            this.powerButton = 1
+        // 電源オフの状態の時、powerButton=0 を powerButton=1 へ変更
+        if (this.powerButton == 0 && lockStatus.classList.value == "status-unlocked") {
+            this.powerButton = 1;
             powerStatus.innerHTML = "オン"
+
+
         } else {
-            this.powerButton = 0
+            this.powerButton = 0;
             powerStatus.innerHTML = "オフ"
+
+
         }
     }
 
+
+
+
     // 弱・中・強を選んだり、状況に合わせて加湿の強さを変える（弱中強ボタンは一つ）
     // 戻り値：number
-    /*
-       switchMode (){
-           if(this.powerButton == 1 && this.childLock == 0){
-       if(this.humidificationModes == 0){ 
-           modeStatus.innerHTML = '弱';
-           this.humidificationModes = 1;
-           return;
-       }
-   
-       if(this.humidificationModes == 1){ 
-           modeStatus.innerHTML = '中';
-           this.humidificationModes = 2;
-           return;
-       }
-   
-       if(this.humidificationModes == 2){ 
-           modeStatus.innerHTML = '強';
-           this.humidificationModes = 0;
-           return;
-       }
-   }
-   }
-   */
+
 
     switchMode() {
-        if (this.powerButton == 1 && this.childLock == 0) {
+        if (this.powerButton == 1 && lockStatus.classList.value == "status-unlocked") {
             switch (this.humidificationModes) {
                 case 0:
                     modeStatus.innerHTML = '弱';
-                    return this.humidificationModes = 1;
-
+                    this.humidificationModes = 1;
+                    break;
 
                 case 1:
                     modeStatus.innerHTML = '中';
-                    return this.humidificationModes = 2;
-
+                    this.humidificationModes = 2;
+                    break;
 
                 default:
                     modeStatus.innerHTML = '強';
-                    return this.humidificationModes = 0;
-
+                    this.humidificationModes = 0;
+                    break;
             }
         }
     }
 
-
     // 「水を入れてね」とランプでお知らせする機能
+
     callWater() {
-        if (this.tankCapacity == 0 && this.powerButton == 1) {
-            alert('水を入れてね')
+        if (this.tankCapacity === 0 && this.powerButton == 1 && lockStatus.classList.value == "status-unlocked") {
+            waterAlert.style.display = "inline-block";
+        } else {
+            waterAlert.style.display = "none";
         }
+        console.log(this.tankCapacity)
     }
+
 
 
     // 子どもがボタンを押しても動かないようにする、安全用の機能
+    //let isLocked = false; 
+
     lockChild() {
-        if (this.childLock === 0) {
-            this.childLock = 1;
-            lockStatus.innerHTML = "チャイルドロック：ON";
+        if (lockStatus.classList.value == "status-unlocked") {
+            lockStatus.textContent = 'ロック中';
+            lockStatus.classList.remove('status-unlocked');
+            lockStatus.classList.add('status-locked');
+
+            console.log("チャイルドロックが有効になりました。");
         } else {
-            this.childLock = 0;
-            lockStatus.innerHTML = "チャイルドロック：OFF";
+            lockStatus.textContent = '解除';
+            lockStatus.classList.remove('status-locked');
+            lockStatus.classList.add('status-unlocked');
+
+            console.log("チャイルドロックが解除されました。");
         }
     }
+
 
 
     // 時間が来たら自動で電源が切れる機能（2時間、4時間）ボタンは一つ
     switchTimer() {
-        if (this.powerButton == 1 && this.timerOff == 0) {
+        if (this.powerButton == 1 && this.timerOff == 0 && lockStatus.classList.value == "status-unlocked") {
             const fn = function () {
                 timerStatus.innerHTML = "2時間経過";
                 this.powerButton = 0
@@ -127,28 +143,27 @@ class HumidifierControler {
             const tm = 1000
             //((10000*6)*60)*2
             setTimeout(fn, tm);
-            this.timerOff = 1
 
-        } else if (this.powerButton == 1 && this.timerOff == 1) {
+
+        } else if (this.powerButton == 1 && this.timerOff == 1 && lockStatus.classList.value == "status-unlocked") {
             const fn = function () {
                 timerStatus.innerHTML = "4時間経過";
                 this.powerButton = 0
                 powerStatus.innerHTML = "オフ"
                 this.timerOff = 2
-            };
+            }.bind(this);
             const tm = 2000
             //((10000*6)*60)*4
             setTimeout(fn, tm);
-            this.timerOff = 0
+
         } else {
-            timerStatus.innerHTML = "あいうえお";
+            timerStatus.innerHTML = "OFF";
         }
 
 
     }
+
 }
-
-
 
 let Humidifier = new HumidifierControler()
 
@@ -162,5 +177,3 @@ lockChildButton.addEventListener('click', () => Humidifier.lockChild());
 switchTimerButton.addEventListener('click', () => Humidifier.switchTimer());
 
 
-
-console.log(Humidifier.powerButton)
