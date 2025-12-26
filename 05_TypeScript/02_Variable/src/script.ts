@@ -59,6 +59,8 @@ let obj3: any
 obj3 = 123
 obj3 = 'あいうえお'
 obj3 = {1:'aaaa',2:222,3:'カキクケコ'}
+console.log(obj3);
+
 
 // タプル型
 let tuple1: [string,number]

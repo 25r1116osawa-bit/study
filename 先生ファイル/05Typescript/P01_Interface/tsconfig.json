@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     // File Layout
-    "rootDir": "../05_class/src",
-    "outDir": "../05_class/dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
 
     // Environment Settings
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "nodenext",
     "target": "esnext",
     "types": [],
 
@@ -19,11 +18,6 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    "lib": [
-        "esNext",
-        "dom"
-    ],
-
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -34,5 +28,5 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
   },
-  "include": ["../05_class/src/**/*"]
+  "include": ["src/**/*"]
 }

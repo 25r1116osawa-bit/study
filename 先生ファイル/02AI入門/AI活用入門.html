@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI活用入門：インタラクティブ・ラーニング</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #fdfcf9;
+            color: #333;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-link.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            border-color: #c7d2fe;
+            color: #4f46e5;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .accordion-content {
+            display: none;
+            transition: max-height 0.3s ease-out;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-button.active {
+            background-color: #6366f1;
+            color: #ffffff;
+        }
+        .industry-tab.active {
+            background-color: #eef2ff;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals (BG: #fdfcf9, Text: #333, Accent: #4f46e5 (Indigo 600)) -->
+    <!-- Application Structure Plan: 
+        SPAは、ソースレポートの5つの主要セクションに対応するタブベースのナビゲーションを採用。ユーザーは「1. AIの基礎」「2. ビジネス活用」「3. 生成AI実践」「4. AIリテラシー」「5. 業界別事例」を自由に切り替え可能。
+        この構造は、学習者がテキストの論理的な流れに沿って、または興味のあるトピック（例：「生成AI実践」）に直接アクセスできるように設計されている。
+        インタラクションは、メインのタブ切替、セクション内のサブタブ（例：「データ化プロセス」や「業界別事例」）、アコーディオン（例：「ツール一覧」や「実践プロンプト」）に集約。これにより、一度に表示される情報量を制御し、ユーザーが圧倒されることなく、自分のペースで情報を探索・消化できるようにした。
+    -->
+    <!-- Visualization & Content Choices:
+        - [Report Info: ANI/AGI/ASI分類] -> [Goal: 比較] -> [Viz: 3カラムカード (HTML/Tailwind)] -> [Interaction: なし] -> [Justification: 3つの概念を明確に分離・対比] -> [Library: Tailwind]
+        - [Report Info: データ化プロセス] -> [Goal: 説明] -> [Viz: サブタブ切替 (HTML/JS)] -> [Interaction: タブクリックで表示切替] -> [Justification: 異なるデータ型（画像/音声/テキスト）の処理法を整理して提示] -> [Library: JS/Tailwind]
+        - [Report Info: AIプロジェクトの進め方] -> [Goal: プロセス表示] -> [Viz: ステップフロー (HTML/Tailwind)] -> [Interaction: なし] -> [Justification: 時系列プロセスを視覚化] -> [Library: Tailwind]
+        - [Report Info: 日本語 vs 英語 トークン消費] -> [Goal: 定量的比較] -> [Viz: Bar Chart (Chart.js)] -> [Interaction: なし (静的チャート)] -> [Justification: コストと情報量の差を視覚的に強調] -> [Library: Chart.js]
+        - [Report Info: AIツール一覧] -> [Goal: 一覧・探索] -> [Viz: アコーディオン (HTML/JS)] -> [Interaction: クリックでカテゴリ展開] -> [Justification: 多数のツールをカテゴリ別に整理し、画面を占有しすぎないようにする] -> [Library: JS/Tailwind]
+        - [Report Info: 業界別事例] -> [Goal: 探索] -> [Viz: 縦型タブ (HTML/JS)] -> [Interaction: タブクリックで表示切替] -> [Justification: 業界ごとの情報を効率的に切り替え可能にする] -> [Library: JS/Tailwind]
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-gray-50">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-800">AI活用入門</h1>
+            <p class="text-xl text-indigo-600 mt-2">インタラクティブ・ラーニング・ダッシュボード</p>
+        </header>
+
+        <nav class="bg-white shadow-sm rounded-lg mb-8">
+            <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 p-4">
+                <button class="nav-link active text-sm sm:text-base px-3 py-3" data-target="sec1">1. AIの基礎</button>
+                <button class="nav-link text-sm sm:text-base px-3 py-3" data-target="sec2">2. ビジネス活用</button>
+                <button class="nav-link text-sm sm:text-base px-3 py-3" data-target="sec3">3. 生成AI実践</button>
+                <button class="nav-link text-sm sm:text-base px-3 py-3" data-target="sec4">4. AIリテラシー</button>
+                <button class="nav-link text-sm sm:text-base px-3 py-3" data-target="sec5">5. 業界別事例</button>
+            </div>
+        </nav>
+
+        <main id="main-content">
+
+            <!-- Section 1: AIの基礎 -->
+            <section id="sec1" class="content-section active space-y-12">
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">1. AI（人工知能）とは何か？</h2>
+                    <p class="text-gray-700">AI（人工知能）は、その能力や機能によって様々な側面に分類されます。ここでは、AIの知能レベルによる分類、機能による分類、そしてAIの仕組みを支える技術的な要素についてインタラクティブに学びます。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIの分類：知能レベル・汎用性による分類</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-5 bg-gray-50">
+                            <h4 class="font-bold text-lg text-gray-900">特化型人工知能 (ANI)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Artificial Narrow Intelligence</p>
+                            <p class="mt-3 text-gray-700">特定の単一タスクの実行に特化。現在実用化されているAIのほとんどがこれに該当します。（例：画像認識、音声認識）</p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-5 bg-gray-50">
+                            <h4 class="font-bold text-lg text-gray-900">汎用人工知能 (AGI)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Artificial General Intelligence</p>
+                            <p class="mt-3 text-gray-700">人間のように、様々な状況や領域で多様なタスクをこなせる一般的な知能を持つAI。（現在研究・開発段階）</p>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-5 bg-gray-50">
+                            <h4 class="font-bold text-lg text-gray-900">人工超知能 (ASI)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Artificial Super Intelligence</p>
+                            <p class="mt-3 text-gray-700">人間の知能をはるかに凌駕する能力を持つAI。（現時点では理論上の存在）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">技術・機能による分類と専門分野</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">💬</span>
+                            <div><strong class="text-gray-800">自然言語処理 (NLP):</strong> テキストの翻訳、要約、文章生成、チャットボットなど。</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">👁️</span>
+                            <div><strong class="text-gray-800">画像認識:</strong> 顔認証、医療診断支援、自動運転、異常検知など。</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">🔊</span>
+                            <div><strong class="text-gray-800">音声認識:</strong> スマートスピーカー、音声アシスタント、電話自動応答など。</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">🧠</span>
+                            <div><strong class="text-gray-800">機械学習・ディープラーニング:</strong> データからのパターン学習、予測分析、複雑な問題解決。</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">✨</span>
+                            <div><strong class="text-gray-800">生成AI (Generative AI):</strong> 文章、画像、動画、音楽などの新しいコンテンツの自動生成。</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-indigo-500 mr-3 mt-1">🤖</span>
+                            <div><strong class="text-gray-800">ロボティクス・機械制御:</strong> 自動運転技術、産業用ロボットの制御、スマート農業など。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIの仕組みとデータ化のプロセス</h3>
+                    <p class="mb-4 text-gray-700">AIは、画像、音声、テキストなどの「非構造化データ」を、学習可能な「数値」に変換（データ化）することで処理を行います。下のタブをクリックして、各データがどのように処理されるかを見てみましょう。</p>
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                            <button class="tab-button data-tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="data-image">画像</button>
+                            <button class="tab-button data-tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="data-audio">音声</button>
+                            <button class="tab-button data-tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="data-text">テキスト</button>
+                        </nav>
+                    </div>
+                    <div>
+                        <div id="data-image" class="tab-content data-tab-content active p-2">
+                            <h4 class="font-semibold text-lg mb-2">画像のデータ化</h4>
+                            <p class="text-gray-700">画像は細かな点（ピクセル）の集まりとして認識されます。各ピクセルは、RGB（赤・緑・青）の明るさの組み合わせ（例：R:255, G:0, B:0で赤色）として0から255までの数値で表現されます。AIは、この巨大な「数値の行列」を学習データとして扱います。</p>
+                        </div>
+                        <div id="data-audio" class="tab-content data-tab-content p-2">
+                            <h4 class="font-semibold text-lg mb-2">音声のデータ化</h4>
+                            <p class="text-gray-700">音声は空気の振動（波形）です。「サンプリング」処理により、アナログな波形を一定間隔で区切り、その都度の振幅を数値（デジタルデータ）として記録します。この「数値の羅列」がAIの学習データとなります。</p>
+                        </div>
+                        <div id="data-text" class="tab-content data-tab-content p-2">
+                            <h4 class="font-semibold text-lg mb-2">テキストのデータ化</h4>
+                            <p class="text-gray-700">テキストは「トークン」（言語のかけら）に分割された後、「埋め込み（Embedding）」技術によって、単語や文脈の意味的な情報を表現する高次元の「数値ベクトル」に変換されます。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIの処理を支えるハードウェア：NPU</h3>
+                    <p class="mb-4 text-gray-700">AIの高度な計算は、CPUやGPUだけでなく、AI処理に特化したNPUによって支えられています。それぞれの役割の違いを見てみましょう。</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">プロセッサ</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">主な役割・得意分野</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">CPU</td>
+                                    <td class="px-6 py-4 text-gray-700">汎用的なタスクの実行、順次処理、論理的な処理</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">GPU</td>
+                                    <td class="px-6 py-4 text-gray-700">画像・映像処理、大量データの並列計算</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">NPU</td>
+                                    <td class="px-6 py-4 text-gray-700">AI・機械学習の推論処理、ニューラルネットワーク演算に特化（高速・省電力）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">対比：人工知能 vs 人工無能</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-lg text-gray-800">人工知能 (AI)</h4>
+                            <p class="mt-2 text-gray-700">会話の意味や文脈を理解し、自ら学習・思考・判断する能力を持ちます。臨機応変な対応や創造性を持ちます。</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg text-gray-800">人工無能 (ルールベース)</h4>
+                            <p class="mt-2 text-gray-700">予め設定されたルールや定型文に基づいて応答します。学習能力はなく、定義されたルールに従うのみです。（例：FAQチャットボット）</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: ビジネス活用 -->
+            <section id="sec2" class="content-section space-y-12">
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">2. ビジネス分野でのAI活用</h2>
+                    <p class="text-gray-700">AIはビジネスのあらゆる側面で活用が進んでいます。ここでは、AI導入の具体的なメリットと課題、そしてAIプロジェクトを成功させるための標準的な進め方について解説します。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AI導入のメリットと課題</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-lg text-green-700 mb-3">メリット</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>業務効率化・生産性向上</li>
+                                <li>コスト削減</li>
+                                <li>新規ビジネス創出</li>
+                                <li>データに基づいた意思決定</li>
+                                <li>顧客体験の向上</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg text-red-700 mb-3">課題と対応策</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>データ品質の確保:</strong> AI学習のためのデータ収集・整備が不可欠。</li>
+                                <li><strong>人材育成:</strong> AI技術者やAIを活用できるビジネス人材の育成。</li>
+                                <li><strong>倫理的課題への対応:</strong> 公平性、透明性、プライバシー保護の遵守。</li>
+                                <li><strong>システム連携:</strong> 既存システムとの連携やインフラ整備。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIプロジェクトの進め方</h3>
+                    <p class="mb-6 text-gray-700">AIプロジェクトは、課題の特定から効果測定まで、段階的に進めることが成功の鍵です。</p>
+                    <div class="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-2">
+                        <div class="flex-1 text-center p-4 bg-indigo-50 rounded-lg">
+                            <div class="text-indigo-600 font-bold text-lg">Step 1</div>
+                            <div class="text-gray-800 font-semibold mt-1">ビジネス課題の特定</div>
+                        </div>
+                        <div class="flex-1 text-center p-4 bg-indigo-50 rounded-lg">
+                            <div class="text-indigo-600 font-bold text-lg">Step 2</div>
+                            <div class="text-gray-800 font-semibold mt-1">データ収集・準備</div>
+                        </div>
+                        <div class="flex-1 text-center p-4 bg-indigo-50 rounded-lg">
+                            <div class="text-indigo-600 font-bold text-lg">Step 3</div>
+                            <div class="text-gray-800 font-semibold mt-1">PoC（概念実証）</div>
+                        </div>
+                        <div class="flex-1 text-center p-4 bg-indigo-50 rounded-lg">
+                            <div class="text-indigo-600 font-bold text-lg">Step 4</div>
+                            <div class="text-gray-800 font-semibold mt-1">本格導入・運用</div>
+                        </div>
+                        <div class="flex-1 text-center p-4 bg-indigo-50 rounded-lg">
+                            <div class="text-indigo-600 font-bold text-lg">Step 5</div>
+                            <div class="text-gray-800 font-semibold mt-1">効果測定と改善</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: 生成AI実践 -->
+            <section id="sec3" class="content-section space-y-12">
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">3. 生成系AIの使い方と実践</h2>
+                    <p class="text-gray-700">ChatGPTやGeminiに代表される生成AIは、私たちの仕事や学習の方法を大きく変えようとしています。ここでは、AIが言語を処理する仕組みから、専門職「プロンプトエンジニア」の役割、実践的な活用法までを深掘りします。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIのテキスト処理：トークンの概念</h3>
+                    <p class="mb-4 text-gray-700">AIはテキストを「トークン」という単位に分解して処理します。言語によってトークンの消費量が異なり、特に日本語は英語に比べて多くのトークンを消費する傾向があり、コストや処理速度に影響します。</p>
+                    <div class="chart-container h-64 sm:h-80">
+                        <canvas id="tokenChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">プロンプトエンジニアリング</h3>
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                            <button class="tab-button prompt-tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="prompt-basic">基礎</button>
+                            <button class="tab-button prompt-tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="prompt-pro">専門職の役割</button>
+                            <button class="tab-button prompt-tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-target="prompt-skills">求められるスキル</button>
+                        </nav>
+                    </div>
+                    <div>
+                        <div id="prompt-basic" class="tab-content prompt-tab-content active p-2">
+                            <h4 class="font-semibold text-lg mb-3">プロンプトエンジニアリングの基礎</h4>
+                            <p class="mb-3 text-gray-700">AIから質の高い回答を引き出すための質問の設計技術です。すべてのユーザーが習得すべき基本的なスキルです。</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>ペルソナ設定:</strong> 「あなたは〇〇の専門家です」と役割を与える。</li>
+                                <li><strong>制約条件:</strong> 「300字以内」「箇条書きで」など形式を指定する。</li>
+                                <li><strong>フォーマット指定:</strong> JSONや表形式など、具体的な出力形式を指定する。</li>
+                                <li><strong>背景情報の提供:</strong> 質問の前提となる情報や文脈を詳しく伝える。</li>
+                            </ul>
+                        </div>
+                        <div id="prompt-pro" class="tab-content prompt-tab-content p-2">
+                            <h4 class="font-semibold text-lg mb-3">専門職としてのプロンプトエンジニア</h4>
+                            <p class="mb-3 text-gray-700">AIの性能を最大限に引き出し、ビジネス目的の成果物を得るためにプロンプトの設計と改良を行う専門職です。</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>プロンプトの設計と改良:</strong> 期待通りの出力をさせるための指示文を設計・改良します。</li>
+                                <li><strong>実務的役割（運用・FB対応）:</strong> 顧客の要望とAIの性能のズレを埋めるため、データ整形やプロンプト調整を行います。</li>
+                                <li><strong>倫理・セキュリティ制御:</strong> 機密情報を回答させないなど、「やってはいけないこと」を守るためのルール制御を行います。</li>
+                            </ul>
+                        </div>
+                        <div id="prompt-skills" class="tab-content prompt-tab-content p-2">
+                            <h4 class="font-semibold text-lg mb-3">求められるスキル</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">テクニカルスキル</h5>
+                                    <ul class="list-disc list-inside space-y-1 text-gray-700 mt-2">
+                                        <li>基本的なプロンプト設計スキル</li>
+                                        <li>プログラミングスキル (Python必須)</li>
+                                        <li>システム統合能力 (API連携)</li>
+                                        <li>応用技術の理解 (RAG, Function calling)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">ヒューマンスキル</h5>
+                                    <ul class="list-disc list-inside space-y-1 text-gray-700 mt-2">
+                                        <li>コミュニケーション能力</li>
+                                        <li>言語化能力</li>
+                                        <li>探究心と挑戦意欲</li>
+                                        <li>論理的思考と分析</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIツール一覧とその特徴</h3>
+                    <p class="mb-4 text-gray-700">AIツールは急速に進化しています。カテゴリ名をクリックして、代表的なツールとその特徴を確認しましょう。</p>
+                    <div class="space-y-3">
+                        <div class="accordion-item">
+                            <button class="accordion-header flex justify-between items-center w-full px-5 py-4 text-left bg-indigo-50 text-indigo-800 font-semibold rounded-lg hover:bg-indigo-100 transition-colors">
+                                <span>チャットAI</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content p-4 bg-white border border-t-0 border-gray-200 rounded-b-lg">
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                    <li><strong>ChatGPT (OpenAI):</strong> 自然な言語処理を得意とした対話型AI。</li>
+                                    <li><strong>Microsoft Copilot (Microsoft):</strong> Office製品に統合されたAIアシスタント。</li>
+                                    <li><strong>Gemini (Google):</strong> Google Workspaceに統合、多機能（Canvas機能など）。</li>
+                                    <li><strong>Notebook LM (Google):</strong> メモ作成や情報整理、アップロードした資料を基にした自己学習に特化。</li>
+                                    <li><strong>Claude (Anthropic):</strong> 長文の処理能力、自然な文書生成に優れる。</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header flex justify-between items-center w-full px-5 py-4 text-left bg-indigo-50 text-indigo-800 font-semibold rounded-lg hover:bg-indigo-100 transition-colors">
+                                <span>画像・動画・音楽生成</span>
+                                <span class="accordion-icon">+</span>
+                            </button>
+                            <div class="accordion-content p-4 bg-white border border-t-0 border-gray-200 rounded-b-lg">
+                                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                    <li><strong>Midjourney:</strong> 芸術性の高い画像を生成。</li>
+                                    <li><strong>Stable Diffusion (Stability AI):</strong> オープンソースの画像生成モデル、カスタマイズ性が高い。</li>
+                                    <li><strong>Dream Machine (Luma):</strong> リアルな動きやカメラワークを特徴とする動画生成。</li>
+                                    <li><strong>Suno:</strong> テキストから音楽（ジャンル、テーマ、歌詞）を生成。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIを利用した実践的な調べ方と情報検証</h3>
+                    <p class="mb-4 text-gray-700">AIは、調べ物や学習、さらには情報の検証にも活用できます。ここでは、ペルソナ設定を使った調べ方と、複数のAIを連携させた情報検証のハンズオン課題を紹介します。</p>
+                    
+                    <div class="accordion-item mb-4">
+                        <button class="accordion-header flex justify-between items-center w-full px-5 py-4 text-left bg-gray-100 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                            <span>実践例1：ペルソナ設定による「講師」の活用</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content p-4 bg-white border border-t-0 border-gray-200 rounded-b-lg">
+                            <p class="mb-3 text-gray-700">AIに「誰か」の役割（ペルソナ）を与えることで、回答の質やトーンを劇的に向上させることができます。</p>
+                            <h5 class="font-semibold mb-2">【実践プロンプト例】</h5>
+                            <pre class="bg-gray-800 text-white p-4 rounded-lg text-sm overflow-x-auto">
+<code>あなたはITの講師です。
+私は、IT業界初心者です。
+ほとんどITの知識はありません。
+
+Javascriptについて初心者でもわかりやすく説明して下さい。</code></pre>
+                            <h5 class="font-semibold mt-4 mb-2">【ポイント解説】</h5>
+                            <ul class="list-disc list-inside text-gray-700">
+                                <li><strong>ペルソナ設定 (`あなたはITの講師です`):</strong> AIの回答スタイルを教育的・親切なトーンに設定します。</li>
+                                <li><strong>対象者設定 (`私は、IT業界初心者です`):</strong> 専門用語を避け、具体的な例を用いた説明を引き出します。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header flex justify-between items-center w-full px-5 py-4 text-left bg-gray-100 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                            <span>実践例2：課題：マルチAI連携による情報検証</span>
+                            <span class="accordion-icon">+</span>
+                        </button>
+                        <div class="accordion-content p-4 bg-white border border-t-0 border-gray-200 rounded-b-lg">
+                            <p class="mb-3 text-gray-700">AIの回答を鵜呑みにせず、複数のAIで「相互チェック」することは、信頼性を高める上で非常に重要です。</p>
+                            <h5 class="font-semibold mb-2">【課題】「Spring Framework」について調査し、情報の信憑性を確認する。</h5>
+                            <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                                <li>
+                                    <strong>Geminiで調査（情報収集）:</strong><br>
+                                    <span class="text-sm">プロンプト: <code>Spring Frameworkとは何ですか？何ができるのかを箇条書きでまとめてください。</code></span><br>
+                                    <span class="text-sm">目的: 検索連携に強いAIで、基礎情報と最新動向を効率的に収集する。</span>
+                                </li>
+                                <li>
+                                    <strong>ChatGPTで検証（信憑性チェック）:</strong><br>
+                                    <span class="text-sm">プロンプト: <code>以下の「Spring Framework」に関する説明を読み、内容に誤りがないか、また情報が古くないかを検証してください。（ここに、Geminiの回答を貼り付けます）</code></span><br>
+                                    <span class="text-sm">目的: 収集した情報に対し、別のAIの知見を使い、論理的な誤りや情報の鮮度について客観的な意見を得る。</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Section 4: AIリテラシー -->
+            <section id="sec4" class="content-section space-y-12">
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">4. AIリテラシーの重要性と倫理</h2>
+                    <p class="text-gray-700">AIを責任を持って活用するためには、その能力と限界を理解し、倫理的な側面を考慮することが不可欠です。AIがもたらすバイアスやリスク、そして私たちが持つべき責任について解説します。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AIリテラシーとは</h3>
+                    <p class="text-gray-700">AIの能力と限界を理解し、適切に活用・評価するための知識とスキルです。具体的には、AIが学習に用いたデータによる**バイアス**の理解、AIの回答の**限界**、**著作権**、**情報漏洩リスク**など、AIを取り巻く諸問題を理解することが含まれます。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-5">AI倫理とリスク</h3>
+                    <ul class="space-y-4">
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-semibold text-lg text-gray-800">公平性 (Fairness)</h4>
+                            <p class="mt-2 text-gray-700">特定の集団に対して不当な差を生まないこと。ただし、AIは人工物であり、その設計者や開発者の**思想、意図、または学習データセットの偏り**が、AIの挙動や出力に反映され、公平性を損なう可能性がある点について議論を深める必要があります。</p>
+                        </li>
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-semibold text-lg text-gray-800">透明性 (Transparency)</h4>
+                            <p class="mt-2 text-gray-700">AIの判断根拠やプロセスを理解できるようにすること。</p>
+                        </li>
+                        <li class="p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-semibold text-lg text-gray-800">アカウンタビリティ (Accountability)</h4>
+                            <p class="mt-2 text-gray-700">AIによる決定について責任の所在を明確にすること。</p>
+                        </li>
+                        <li class="p-4 bg-red-50 rounded-lg border border-red-200">
+                            <h4 class="font-semibold text-lg text-red-800">社会的リスク</h4>
+                            <p class="mt-2 text-red-700">**フェイクニュース**や**ディープフェイク**、**著作権侵害**など、生成AIがもたらす社会的なリスクにも十分な注意と対策が必要です。</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <!-- Section 5: 業界別事例 -->
+            <section id="sec5" class="content-section space-y-12">
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">5. 業界別AI活用事例の紹介</h2>
+                    <p class="text-gray-700">AIは様々な産業で具体的な成果を上げており、その応用範囲は広がり続けています。左のタブをクリックして、各業界での具体的な活用事例を見てみましょう。</p>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
+                            <nav class="flex flex-row md:flex-col -mb-px md:mb-0 space-x-2 md:space-x-0 md:space-y-1" aria-label="Industry Tabs">
+                                <button class="industry-tab active w-full text-left px-4 py-3 text-sm font-medium rounded-t-lg md:rounded-tr-none md:rounded-l-lg" data-target="industry-manu">製造業</button>
+                                <button class="industry-tab w-full text-left px-4 py-3 text-sm font-medium" data-target="industry-finance">金融</button>
+                                <button class="industry-tab w-full text-left px-4 py-3 text-sm font-medium" data-target="industry-medical">医療</button>
+                                <button class="industry-tab w-full text-left px-4 py-3 text-sm font-medium" data-target="industry-retail">小売/EC</button>
+                                <button class="industry-tab w-full text-left px-4 py-3 text-sm font-medium rounded-b-lg md:rounded-bl-none md:rounded-r-lg" data-target="industry-logi">物流</button>
+                            </nav>
+                        </div>
+                        <div class="md:w-3/4 pl-0 md:pl-8 pt-6 md:pt-0">
+                            <div id="industry-manu" class="tab-content industry-tab-content active">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3">製造業</h3>
+                                <h4 class="font-semibold text-gray-800">主要な活用領域:</h4>
+                                <p class="mb-3 text-gray-700">予知保全、品質管理</p>
+                                <h4 class="font-semibold text-gray-800">具体的な事例:</h4>
+                                <p class="text-gray-700">センサーデータによる故障予知、画像認識による不良品検出。</p>
+                            </div>
+                            <div id="industry-finance" class="tab-content industry-tab-content">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3">金融</h3>
+                                <h4 class="font-semibold text-gray-800">主要な活用領域:</h4>
+                                <p class="mb-3 text-gray-700">不正取引検知、信用スコアリング</p>
+                                <h4 class="font-semibold text-gray-800">具体的な事例:</h4>
+                                <p class="text-gray-700">パターン分析による不正利用のリアルタイム検知、AIによる融資審査。</p>
+                            </div>
+                            <div id="industry-medical" class="tab-content industry-tab-content">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3">医療</h3>
+                                <h4 class="font-semibold text-gray-800">主要な活用領域:</h4>
+                                <p class="mb-3 text-gray-700">診断支援、創薬</p>
+                                <h4 class="font-semibold text-gray-800">具体的な事例:</h4>
+                                <p class="text-gray-700">医用画像解析による病変の早期発見、候補物質の高速探索。</p>
+                            </div>
+                            <div id="industry-retail" class="tab-content industry-tab-content">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3">小売/EC</h3>
+                                <h4 class="font-semibold text-gray-800">主要な活用領域:</h4>
+                                <p class="mb-3 text-gray-700">需要予測、顧客体験</p>
+                                <h4 class="font-semibold text-gray-800">具体的な事例:</h4>
+                                <p class="text-gray-700">販売データに基づく在庫最適化、パーソナライズされたレコメンド。</p>
+                            </div>
+                            <div id="industry-logi" class="tab-content industry-tab-content">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3">物流</h3>
+                                <h4 class="font-semibold text-gray-800">主要な活用領域:</h4>
+                                <p class="mb-3 text-gray-700">ルート最適化、在庫管理</p>
+                                <h4 class="font-semibold text-gray-800">具体的な事例:</h4>
+                                <p class="text-gray-700">AIによる配送ルートの最適化、需要予測に基づく在庫配置。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // Main Navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    sections.forEach(sec => sec.classList.remove('active'));
+                    const targetSection = document.getElementById(link.dataset.target);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+
+            // Generic Tab Switcher
+            function initializeTabs(buttonClass, contentClass) {
+                const tabButtons = document.querySelectorAll(buttonClass);
+                const tabContents = document.querySelectorAll(contentClass);
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        const targetContent = document.getElementById(button.dataset.target);
+                        if (targetContent) {
+                            targetContent.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            // Initialize all tab groups
+            initializeTabs('.data-tab-button', '.data-tab-content');
+            initializeTabs('.prompt-tab-button', '.prompt-tab-content');
+            initializeTabs('.industry-tab', '.industry-tab-content');
+
+
+            // Accordion
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+
+                header.addEventListener('click', () => {
+                    const isOpen = content.style.display === 'block';
+                    
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
+                    document.querySelectorAll('.accordion-icon').forEach(i => i.textContent = '+');
+                    
+                    if (!isOpen) {
+                        content.style.display = 'block';
+                        icon.textContent = '-';
+                    }
+                });
+            });
+
+            // Chart.js: Token Consumption Chart
+            const ctx = document.getElementById('tokenChart').getContext('2d');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['同じ情報量のテキスト'],
+                        datasets: [
+                            {
+                                label: '英語 (トークン消費: 少)',
+                                data: [1.0],
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)', 
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: '日本語 (トークン消費: 多)',
+                                data: [2.0], 
+                                backgroundColor: 'rgba(239, 68, 68, 0.7)', 
+                                borderColor: 'rgba(239, 68, 68, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '英語 vs 日本語 トークン消費量（相対比較）',
+                                font: { size: 16, family: 'Inter' },
+                                color: '#333'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += `約${context.raw}倍のコスト`;
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '相対的なトークン消費量（英語を1とした場合）',
+                                    font: { size: 12, family: 'Inter' },
+                                    color: '#555'
+                                },
+                                ticks: {
+                                    font: { family: 'Inter' },
+                                    color: '#333'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    font: { family: 'Inter' },
+                                    color: '#333'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

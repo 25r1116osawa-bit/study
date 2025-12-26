@@ -30,8 +30,26 @@ arr2[10] = 3;
 console.log(arr2);
 console.log(arr2[8]);
 console.log(arr2[12]);
+// 配列の要素の定数化(読み込み専用)
 const powerLevel = ['弱', '中', '強'];
 // powerLevel[1] = '書き込めなくなった。'
 // オブジェクト
+let obj1;
+obj1 = { name: '木内', age: 37 };
+// obj1 = {name:'木内',age:'37'} プロパティの型が違う
+// obj1 = {name:'木内'} プロパティの数が違う(オブジェクトの型エラー)
+// プロパティをオプショナルにすると省略可能になる。
+let obj2;
+obj2 = { name: '木内' };
 // any
+// 型チェックを行いたくないときに使う
+// すなわち、何でもできるようになる。
+let obj3;
+obj3 = 123;
+obj3 = 'あいうえお';
+obj3 = { 1: 'aaaa', 2: 222, 3: 'カキクケコ' };
+console.log(obj3);
+// タプル型
+let tuple1;
+tuple1 = ["木内和也", 37];
 //# sourceMappingURL=script.js.map

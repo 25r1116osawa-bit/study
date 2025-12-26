@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript OOP Interactive Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFBF7; /* Warm Neutral Background */
+            color: #374151;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* Custom scrollbar for log area */
+        .log-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .log-area::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .log-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .log-area::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tab-active {
+            border-bottom: 3px solid #6366f1;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals with Indigo/Emerald Accents.
+         Background: #FDFBF7 (Cream/Paper)
+         Primary Text: #374151 (Charcoal)
+         Accent 1 (Logic/Structure): #6366f1 (Indigo)
+         Accent 2 (Success/Action): #10b981 (Emerald)
+         Secondary Backgrounds: #F3F4F6 (Light Gray)
+    -->
+
+    <!-- Application Structure Plan:
+         Designed as an "Interactive Lecture Hub" to facilitate step-by-step understanding.
+         1. **Navigation:** Tab-based navigation (Fundamentals, OOP Pillars, JS Specifics, Code Lab) to chunk information logically without overwhelming the user.
+         2. **Fundamentals Tab:** Introduces the definition of OOP and Object components (Property/Method) using visual boxes to represent encapsulation conceptually.
+         3. **OOP Pillars Tab:** Uses interactive cards for Encapsulation, Inheritance, and Polymorphism. Clicking a card reveals detailed benefits and examples to promote active exploration.
+         4. **JS Specifics Tab:** Focuses on the "Class vs. Prototype" distinction. Contains a dynamic comparison table and a visual explanation of the Prototype Chain.
+         5. **Code Lab (Simulation):** The core interactive element. Instead of just reading code, users "drive" instances of the Car/ElectricCar classes defined in the report. They see real-time feedback (charts for speed/battery) and console logs, reinforcing the practical application of the concepts.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. **Report Info:** Object Definition (Data + Method).
+            **Goal:** Inform.
+            **Viz:** Styled HTML "Object Box" diagram.
+            **Interaction:** Static visual, hover effects.
+            **Justification:** Visualizing abstract concepts helps retention.
+
+         2. **Report Info:** Three Pillars (Encapsulation, Inheritance, Polymorphism).
+            **Goal:** Organize & Inform.
+            **Viz:** Interactive Grid Cards.
+            **Interaction:** Click/Hover to expand details.
+            **Justification:** Chunks complex theory into digestible interactive pieces.
+
+         3. **Report Info:** Class vs. Prototype comparison table.
+            **Goal:** Compare.
+            **Viz:** Styled HTML Table.
+            **Interaction:** Filter/Highlight rows (handled via clear visual design).
+            **Justification:** Clear side-by-side comparison is best for this data.
+
+         4. **Report Info:** Car/ElectricCar Code Example.
+            **Goal:** Change & Relationships (Input -> Output).
+            **Viz:** Chart.js Bar Chart (Speed/Battery) + Simulated Console Log.
+            **Interaction:** Buttons to `accelerate` and `stop`.
+            **Justification:** Transforming static code into a runnable simulation demonstrates "State" (Properties) and "Behavior" (Methods) dynamically.
+         
+         Confirming NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-gray-800">OOP<span class="text-indigo-600">.js</span> Learning Hub</span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <button onclick="switchTab('intro')" id="nav-intro" class="tab-active px-3 py-2 text-sm font-medium transition-colors">基礎 (Fundamentals)</button>
+                    <button onclick="switchTab('pillars')" id="nav-pillars" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">三大要素 (3 Pillars)</button>
+                    <button onclick="switchTab('js-spec')" id="nav-js-spec" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">JSの特殊性 (JS Specifics)</button>
+                    <button onclick="switchTab('lab')" id="nav-lab" class="px-3 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 rounded-md">実践ラボ (Code Lab)</button>
+                </nav>
+                <!-- Mobile menu button (simple implementation) -->
+                <div class="md:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="switchTab('intro')" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">基礎</button>
+                <button onclick="switchTab('pillars')" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">三大要素</button>
+                <button onclick="switchTab('js-spec')" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">JSの特殊性</button>
+                <button onclick="switchTab('lab')" class="block w-full text-left px-3 py-2 text-base font-medium text-indigo-600 bg-indigo-50">実践ラボ</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- SECTION 1: INTRO (FUNDAMENTALS) -->
+        <section id="intro-section" class="space-y-8 animate-fade-in">
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-indigo-500">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">オブジェクト指向プログラミング (OOP) とは？</h1>
+                <p class="text-lg text-gray-600 leading-relaxed mb-4">
+                    このセクションでは、OOPの基本概念を解説します。従来の手続き型プログラミングが「処理の順序」を重視するのに対し、OOPは現実世界のように「モノ（オブジェクト）」を中心にプログラムを構成します。
+                </p>
+                <p class="text-gray-500">
+                    <span class="font-bold">Key Concept:</span> 「データ」と「操作」を一体化することで、複雑なプログラムを整理・管理しやすくします。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <!-- Object Model Visualization -->
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-indigo-500"></div>
+                    <h2 class="text-xl font-bold mb-6 text-gray-800">オブジェクト (Object)</h2>
+                    
+                    <div class="w-full max-w-xs bg-indigo-50 border-2 border-indigo-200 rounded-lg p-4 space-y-4 transition-transform duration-300 group-hover:scale-105">
+                        <div class="bg-white border border-indigo-100 rounded p-3 shadow-sm flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">P</div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-800">プロパティ (Property)</h3>
+                                <p class="text-xs text-gray-500">データ・属性 (色, 速度)</p>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-indigo-100 rounded p-3 shadow-sm flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">M</div>
+                            <div>
+                                <h3 class="font-bold text-sm text-gray-800">メソッド (Method)</h3>
+                                <p class="text-xs text-gray-500">操作・機能 (発進, 停止)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-center text-sm text-gray-500">
+                        オブジェクトは「状態」と「振る舞い」をカバンの中にまとめたようなものです。
+                    </p>
+                </div>
+
+                <!-- Procedural vs OOP Text -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">パラダイムシフト</h2>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 mr-3">1</span>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">従来の手法 (手続き型)</h3>
+                                <p class="text-sm text-gray-600 mt-1">「手順」を上から順に書く。データと処理がバラバラになりやすく、規模が大きくなると管理が困難。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">2</span>
+                            <div>
+                                <h3 class="font-semibold text-indigo-700">オブジェクト指向 (OOP)</h3>
+                                <p class="text-sm text-gray-600 mt-1">関連するデータと処理を「オブジェクト」にまとめる。部品化することで、再利用や修正が容易になる。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THREE PILLARS -->
+        <section id="pillars-section" class="hidden space-y-8 animate-fade-in">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">オブジェクト指向の三大要素</h2>
+                <p class="text-lg text-gray-600">
+                    OOPを強力なツールにしている3つの核となる概念です。これらを理解することで、保守性が高く、拡張しやすいコードが書けるようになります。
+                    <span class="text-sm block mt-2 text-gray-400">カードにマウスを乗せると詳細が表示されます。</span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Encapsulation -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover transition-all duration-300 border-t-4 border-blue-500 relative overflow-hidden group">
+                    <div class="mb-4">
+                        <span class="text-4xl">💊</span>
+                        <h3 class="text-xl font-bold mt-2 text-gray-800">カプセル化</h3>
+                        <p class="text-xs text-blue-500 uppercase tracking-wide font-semibold">Encapsulation</p>
+                    </div>
+                    <p class="text-gray-600 mb-4">データと操作をまとめ、外部からの不正アクセスを防ぐ。</p>
+                    
+                    <div class="bg-blue-50 rounded-lg p-4 text-sm text-blue-800 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="font-bold mb-1">メリット:</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>データの安全性向上</li>
+                            <li>内部構造の隠蔽（ブラックボックス化）</li>
+                            <li>保守性の向上</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Inheritance -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover transition-all duration-300 border-t-4 border-green-500 relative overflow-hidden group">
+                    <div class="mb-4">
+                        <span class="text-4xl">🧬</span>
+                        <h3 class="text-xl font-bold mt-2 text-gray-800">継承</h3>
+                        <p class="text-xs text-green-500 uppercase tracking-wide font-semibold">Inheritance</p>
+                    </div>
+                    <p class="text-gray-600 mb-4">親クラスの機能を子クラスが引き継ぎ、再利用する。</p>
+
+                    <div class="bg-green-50 rounded-lg p-4 text-sm text-green-800 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="font-bold mb-1">メリット:</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>コード重複の削減</li>
+                            <li>拡張性の向上</li>
+                            <li>例: 動物 → 犬, 猫</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Polymorphism -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover transition-all duration-300 border-t-4 border-purple-500 relative overflow-hidden group">
+                    <div class="mb-4">
+                        <span class="text-4xl">🎭</span>
+                        <h3 class="text-xl font-bold mt-2 text-gray-800">ポリモーフィズム</h3>
+                        <p class="text-xs text-purple-500 uppercase tracking-wide font-semibold">Polymorphism</p>
+                    </div>
+                    <p class="text-gray-600 mb-4">同じメソッド名でも、オブジェクトによって異なる動作をする。</p>
+
+                    <div class="bg-purple-50 rounded-lg p-4 text-sm text-purple-800 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="font-bold mb-1">メリット:</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>統一された操作インターフェース</li>
+                            <li>コードの一貫性</li>
+                            <li>例: speak() → "ワン!", "ニャー"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: JS SPECIFICS -->
+        <section id="js-spec-section" class="hidden space-y-8 animate-fade-in">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">JavaScriptにおけるOOPの特殊性</h2>
+                <p class="text-gray-600 mb-6">
+                    JavaScriptは歴史的に「プロトタイプベース」の言語ですが、現在は「クラスベース」のように書ける構文 (`class`) が主流です。しかし、裏側の仕組みを理解することは重要です。
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Comparison Table -->
+                    <div class="overflow-hidden border border-gray-200 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">比較項目</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">クラスベース (Java等)</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-yellow-600 uppercase tracking-wider">JS (プロトタイプベース)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">設計図</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Class (明示的)</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Prototype (既存オブジェクト)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">継承の仕組み</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">機能の<span class="font-bold text-blue-600">コピー</span></td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">機能の<span class="font-bold text-yellow-600">参照・共有</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">`class` 構文</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">標準機能</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">シンタックス・シュガー (糖衣構文)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Visual Explanation -->
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-gray-800 mb-3">プロトタイプチェーンとは？</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="bg-white border-2 border-gray-300 p-3 rounded shadow-sm w-32 text-center text-sm">
+                                    自分のObj
+                                    <div class="text-xs text-gray-400 mt-1">methodA? ❌</div>
+                                </div>
+                                <div class="h-0.5 w-8 bg-gray-400 mx-2"></div>
+                                <div class="text-gray-500 text-xs">探す ➡️</div>
+                            </div>
+                            <div class="flex items-center ml-12">
+                                <div class="text-2xl mr-2">⤵️</div>
+                                <div class="bg-yellow-50 border-2 border-yellow-300 p-3 rounded shadow-sm w-32 text-center text-sm">
+                                    Prototype
+                                    <div class="text-xs text-gray-400 mt-1">methodA? ❌</div>
+                                </div>
+                                <div class="h-0.5 w-8 bg-gray-400 mx-2"></div>
+                                <div class="text-gray-500 text-xs">探す ➡️</div>
+                            </div>
+                            <div class="flex items-center ml-24">
+                                <div class="text-2xl mr-2">⤵️</div>
+                                <div class="bg-green-50 border-2 border-green-300 p-3 rounded shadow-sm w-32 text-center text-sm">
+                                    Grand-Proto
+                                    <div class="text-xs text-green-600 font-bold mt-1">methodA? ✅</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-600">
+                            オブジェクトは機能が見つかるまで、親（プロトタイプ）を辿って検索します。これが「参照」による継承です。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mt-6">
+                    <p class="text-sm text-indigo-800">
+                        <span class="font-bold">推奨:</span> 現代の開発では、可読性とチーム開発のために <strong>`class` 構文</strong> を使うのが標準です。ただし、トラブルシューティングのためにプロトタイプの知識も持っておきましょう。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CODE LAB -->
+        <section id="lab-section" class="hidden space-y-8 animate-fade-in">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">実践ラボ: Carクラスシミュレーター</h2>
+                <p class="text-gray-600">
+                    講義資料のコードを実際に動かしてみましょう。`Car` (親クラス) と `ElectricCar` (子クラス) のインスタンスを作成し、メソッドを呼び出すことで、状態（プロパティ）がどう変化するか確認できます。
+                    <br>特に、`ElectricCar` の <strong>ポリモーフィズム</strong> (加速時にバッテリーが減る) に注目してください。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Controls -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4 border-b pb-2">1. 車種を選択 (Instance)</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="carType" value="gas" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" checked onchange="initSimulation()">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-medium text-gray-900">🚗 Gas Car (Car Class)</span>
+                                    <span class="block text-xs text-gray-500">基本機能のみ</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="carType" value="electric" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" onchange="initSimulation()">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-medium text-gray-900">⚡ Electric Car (Subclass)</span>
+                                    <span class="block text-xs text-gray-500">継承 + ポリモーフィズム</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4 border-b pb-2">2. 操作 (Methods)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="simAccelerate()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded transition-colors flex flex-col items-center">
+                                <span class="text-xl">🚀</span>
+                                <span class="text-sm mt-1">Accelerate</span>
+                            </button>
+                            <button onclick="simStop()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded transition-colors flex flex-col items-center">
+                                <span class="text-xl">🛑</span>
+                                <span class="text-sm mt-1">Stop</span>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-3 text-center">メソッドを実行すると状態が変化します</p>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4 flex justify-between items-center">
+                            <span>状態モニター (Properties)</span>
+                            <span id="car-model-display" class="text-sm bg-gray-100 px-2 py-1 rounded text-gray-600">Model: Unknown</span>
+                        </h3>
+                        
+                        <div class="chart-container">
+                            <canvas id="carChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Console Log -->
+                    <div class="bg-gray-900 rounded-xl shadow p-4 text-left font-mono text-sm h-48 overflow-y-auto log-area border border-gray-700">
+                        <div class="flex justify-between items-center mb-2 sticky top-0 bg-gray-900 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400">Console Output:</span>
+                            <button onclick="clearLog()" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                        </div>
+                        <div id="console-output" class="space-y-1">
+                            <!-- Logs go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">
+                Created based on Lecture Material: OOP & JavaScript.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('intro-section').classList.add('hidden');
+            document.getElementById('pillars-section').classList.add('hidden');
+            document.getElementById('js-spec-section').classList.add('hidden');
+            document.getElementById('lab-section').classList.add('hidden');
+
+            // Reset tab styles
+            const tabs = ['nav-intro', 'nav-pillars', 'nav-js-spec', 'nav-lab'];
+            tabs.forEach(t => {
+                const el = document.getElementById(t);
+                if(el) {
+                    el.classList.remove('tab-active', 'text-indigo-600', 'bg-indigo-50');
+                    el.classList.add('text-gray-500', 'hover:text-gray-700');
+                    if (t === 'nav-lab') el.classList.remove('bg-indigo-50'); // specific reset for button style tab
+                }
+            });
+
+            // Show selected section
+            document.getElementById(tabId + '-section').classList.remove('hidden');
+
+            // Highlight selected tab
+            const activeTab = document.getElementById('nav-' + tabId);
+            if(activeTab) {
+                activeTab.classList.remove('text-gray-500', 'hover:text-gray-700');
+                if (tabId === 'lab') {
+                    activeTab.classList.add('text-indigo-600', 'bg-indigo-50');
+                } else {
+                    activeTab.classList.add('tab-active');
+                }
+            }
+
+            // Init chart if lab tab is opened
+            if(tabId === 'lab' && !chartInstance) {
+                initSimulation();
+            }
+        }
+
+        // --- OOP Logic (The Model) ---
+        // Applying the exact logic from the report
+
+        class Car {
+            constructor(model, color) {
+                this.model = model;
+                this.color = color;
+                this.speed = 0;
+            }
+
+            accelerate(amount) {
+                this.speed += amount;
+                logToConsole(`<span class="text-blue-400">[Car]</span> ${this.model} (${this.color}) が ${amount}km/h 加速しました。`);
+                logToConsole(`<span class="text-gray-400">  -> 現在の速度: ${this.speed}km/h</span>`);
+            }
+
+            stop() {
+                this.speed = 0;
+                logToConsole(`<span class="text-red-400">[Car]</span> ${this.model} は完全に停止しました。`);
+            }
+        }
+
+        class ElectricCar extends Car {
+            constructor(model, color, batteryLevel) {
+                super(model, color);
+                this.batteryLevel = batteryLevel;
+            }
+
+            // Polymorphism
+            accelerate(amount) {
+                super.accelerate(amount);
+                // Consume battery (logic from report: amount / 10 is implied roughly, adjusted for visual effect)
+                const consumption = Math.floor(amount / 5); 
+                this.batteryLevel = Math.max(0, this.batteryLevel - consumption);
+                
+                logToConsole(`<span class="text-yellow-400">[EV]</span> (電気自動車の処理) バッテリー残量: ${this.batteryLevel}%`);
+                if (this.batteryLevel === 0) {
+                    logToConsole(`<span class="text-red-500 font-bold">⚠️ バッテリー切れです！</span>`);
+                }
+            }
+        }
+
+        // --- Simulation State & UI Logic ---
+        let currentCar = null;
+        let chartInstance = null;
+
+        function logToConsole(html) {
+            const output = document.getElementById('console-output');
+            const div = document.createElement('div');
+            div.innerHTML = `> ${html}`;
+            div.className = "text-gray-300 font-mono text-xs border-b border-gray-800 pb-1";
+            output.appendChild(div);
+            // Auto scroll
+            const logArea = document.querySelector('.log-area');
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('console-output').innerHTML = '';
+        }
+
+        function initSimulation() {
+            const carType = document.querySelector('input[name="carType"]:checked').value;
+            const modelDisplay = document.getElementById('car-model-display');
+
+            clearLog();
+
+            if (carType === 'gas') {
+                currentCar = new Car("プリウス", "赤");
+                modelDisplay.innerText = `Model: ${currentCar.model} (Gas)`;
+                logToConsole(`New Car Instance Created: ${currentCar.model}`);
+            } else {
+                currentCar = new ElectricCar("モデル3", "白", 100);
+                modelDisplay.innerText = `Model: ${currentCar.model} (EV)`;
+                logToConsole(`New ElectricCar Instance Created: ${currentCar.model}`);
+            }
+
+            updateChart();
+        }
+
+        function simAccelerate() {
+            if (!currentCar) return;
+            if (currentCar instanceof ElectricCar && currentCar.batteryLevel <= 0) {
+                logToConsole(`<span class="text-red-500">動けません。バッテリーが必要です。</span>`);
+                return;
+            }
+            // Accelerate by random amount between 20 and 50
+            const amount = Math.floor(Math.random() * 30) + 20;
+            currentCar.accelerate(amount);
+            updateChart();
+        }
+
+        function simStop() {
+            if (!currentCar) return;
+            currentCar.stop();
+            updateChart();
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('carChart').getContext('2d');
+            
+            // Prepare data based on car type
+            let labels = ['Speed (km/h)'];
+            let data = [currentCar.speed];
+            let bgColors = ['rgba(99, 102, 241, 0.6)']; // Indigo
+            let borderColors = ['rgba(99, 102, 241, 1)'];
+            let maxScale = 200; // Speed max
+
+            if (currentCar instanceof ElectricCar) {
+                labels.push('Battery (%)');
+                data.push(currentCar.batteryLevel);
+                
+                // Color change based on battery level
+                let battColor = 'rgba(16, 185, 129, 0.6)'; // Green
+                if (currentCar.batteryLevel < 20) battColor = 'rgba(239, 68, 68, 0.6)'; // Red
+                else if (currentCar.batteryLevel < 50) battColor = 'rgba(245, 158, 11, 0.6)'; // Yellow
+                
+                bgColors.push(battColor);
+                borderColors.push(battColor.replace('0.6', '1'));
+            }
+
+            if (chartInstance) {
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.data.datasets[0].backgroundColor = bgColors;
+                chartInstance.data.datasets[0].borderColor = borderColors;
+                chartInstance.update();
+            } else {
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Current Status',
+                            data: data,
+                            backgroundColor: bgColors,
+                            borderColor: borderColors,
+                            borderWidth: 1,
+                            barPercentage: 0.6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 200,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y;
+                                            if(context.label.includes('Speed')) label += ' km/h';
+                                            if(context.label.includes('Battery')) label += '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 500
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            // Start at intro
+            switchTab('intro');
+        };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+/* ==================================== */
+/* 1. CSS変数 (カスタムプロパティ) の定義 */
+/* ==================================== */
+
+/* ライトテーマの変数設定 (デフォルト) */
+.theme-light {
+    /* ベースカラー */
+    --color-bg: #f8f8f8;             /* 明るい背景 */
+    --color-text: #333333;           /* 濃い文字 */
+    --color-border: #cccccc;         /* 薄いボーダー */
+    --color-accent: #e5533d;         /* 暖色系のアクセント (赤) */
+    
+    /* フォーム要素のカラー */
+    --color-input-bg: #ffffff;       /* 白い入力欄背景 */
+    --color-input-focus: #ffc4be;    /* フォーカス時の淡い色 */
+    --color-placeholder: #999999;
+}
+
+/* ダークテーマの変数設定 (居酒屋の夜の雰囲気) */
+.theme-dark {
+    /* ベースカラー */
+    --color-bg: #1a1a1a;             /* 濃い墨色 */
+    --color-text: #e0e0e0;           /* 明るい文字 */
+    --color-border: #444444;         /* 暗いボーダー */
+    --color-accent: #ff9933;         /* 提灯のような暖色系のアクセント (オレンジ) */
+    
+    /* フォーム要素のカラー */
+    --color-input-bg: #2d2d2d;       /* 濃い入力欄背景 */
+    --color-input-focus: #55483f;    /* フォーカス時の淡い色 */
+    --color-placeholder: #aaaaaa;
+}
+
+/* 必須マークの色 */
+.required {
+    color: var(--color-accent);
+    font-size: 0.9em;
+}
+
+
+/* ==================================== */
+/* 2. フォーム全体への共通スタイル適用 */
+/* ==================================== */
+
+#contact-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    /* 変数を利用して背景と文字色を適用 */
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+#contact-form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+
+/* ==================================== */
+/* 3. 入力要素のスタイル */
+/* ==================================== */
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    box-sizing: border-box; /* paddingを含めたサイズ計算 */
+    font-size: 16px;
+    
+    /* 変数を利用して色を適用 */
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* プレースホルダーの色もテーマで切り替える */
+input::placeholder, textarea::placeholder {
+    color: var(--color-placeholder);
+}
+
+/* フォーカス時のスタイル */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-accent);
+    outline: none;
+    box-shadow: 0 0 5px var(--color-input-focus);
+}
+
+/* selectの可読性向上 */
+select {
+    appearance: none; /* デフォルトの矢印を非表示に (必要に応じてカスタムアイコンを追加) */
+}
+
+/* ==================================== */
+/* 4. チェックボックスとボタンのスタイル */
+/* ==================================== */
+
+.policy-group {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.policy-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.policy-group a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+.policy-group a:hover {
+    text-decoration: underline;
+}
+
+/* 送信ボタンのスタイル */
+#submit-button, #theme-toggle {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+#submit-button {
+    background-color: var(--color-accent);
+    color: white; /* ボタン内の文字色は常に白や黒など、テーマによらず高コントラストに */
+}
+
+#submit-button:hover {
+    opacity: 0.85;
+}
+
+/* デモ用テーマ切り替えボタンのスタイル */
+#theme-toggle {
+    background-color: var(--color-border);
+    color: var(--color-text);
+    margin-top: 15px;
+}
+
+/* ==================================== */
+/* 5. プライバシーポリシーのスタイル (追加) */
+/* ==================================== */
+
+#privacy-policy {
+    max-width: 800px; /* フォームより少し幅広にしてもOK */
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 8px;
+    
+    /* フォームと同じ背景と文字色を継承 */
+    background-color: var(--color-bg); 
+    color: var(--color-text);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#privacy-policy h2 {
+    /* フォームのh2と共通化 */
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 10px;
+}
+
+#privacy-policy h3 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: var(--color-accent); /* 小見出しにアクセントカラーを適用 */
+}
+
+#privacy-policy p,
+#privacy-policy ul {
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+#privacy-policy ul {
+    padding-left: 20px;
+    list-style-type: '👉 '; /* 居酒屋サイトに合わせて親しみやすい記号を使用 */
+}
+
+#privacy-policy li {
+    margin-bottom: 10px;
+}
+
+.policy-date {
+    font-style: italic;
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--color-placeholder); /* やや控えめな色で表示 */
+}
+
+.contact-info {
+    border-left: 5px solid var(--color-accent);
+    padding: 10px 15px;
+    margin: 20px 0;
+    background-color: var(--color-input-bg); /* 入力欄と同じ背景色で見やすく */
+}
