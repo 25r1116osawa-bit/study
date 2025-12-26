@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TPS 3D Survival</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: white;
+            font-family: sans-serif
+        }
+
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            font-size: 16px
+        }
+
+        #overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20
+        }
+
+        #flash {
+            position: absolute;
+            inset: 0;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 15;
+            transition: opacity .2s;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 14px 36px;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="ui">
+        STAGE:<span id="stage">1</span><br>
+        TIME:<span id="time">0</span>s<br>
+        HP:<span id="hp">100</span><br>
+        ENEMY:<span id="enemy">0</span><br>
+        GOAL:<span id="goal">WAIT</span><br>
+        DASH:<span id="dash">READY</span>
+    </div>
+
+    <div id="flash"></div>
+
+    <div id="overlay">
+        <h1>TPS 3D SURVIVAL</h1>
+        <p>WASD移動 / マウス視点 / 左クリックダッシュ</p>
+        <button id="startBtn">START</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+        /* ================= 効果音 ================= */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playChord() {
+            const t = audioCtx.currentTime;
+            [880, 1100, 1320].forEach((f, i) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.frequency.value = f; o.type = "triangle";
+                g.gain.value = 0.12;
+                o.connect(g); g.connect(audioCtx.destination);
+                o.start(t + i * 0.03);
+                g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+                o.stop(t + 0.6);
+            });
+        }
+
+        function playSound(type) {
+            if (type === "clear") { playChord(); return; }
+            const map = {
+                start: [440, .12, "sine"],
+                shoot: [600, .08, "square"],
+                damage: [120, .15, "sawtooth"],
+                goal: [880, .12, "triangle"],
+                dash: [500, .2, "sawtooth"]
+            }[type];
+            if (!map) return;
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = map[2]; o.frequency.value = map[0];
+            g.gain.value = map[1];
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start();
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + .3);
+            o.stop(audioCtx.currentTime + .3);
+        }
+
+        /* ================= Three.js ================= */
+        let scene, camera, renderer;
+        let player, goal;
+        let enemies = [], bullets = [];
+        let keys = {}, yaw = 0, targetYaw = 0;
+        let gameState = "menu";
+        let stage = 1, startTime = 0;
+        let slowTimer = 0;
+
+        /* ================= 定数 ================= */
+        const MAX_HP = 100;
+        let hp = MAX_HP;
+
+        const NORMAL_SPEED = 0.18;
+        const DASH_SPEED = 0.45;
+        const DASH_DURATION = 15;
+        const DASH_COOLDOWN = 45;
+        let dashTimer = 0;
+        let dashCooldown = 0;
+
+        const GOAL_TIME = 15;
+        let goalReady = false;
+
+        /* ================= UI ================= */
+        const uiStage = document.getElementById("stage");
+        const uiTime = document.getElementById("time");
+        const uiHP = document.getElementById("hp");
+        const uiEnemy = document.getElementById("enemy");
+        const uiGoal = document.getElementById("goal");
+        const uiDash = document.getElementById("dash");
+        const overlay = document.getElementById("overlay");
+        const flash = document.getElementById("flash");
+
+        /* ================= 初期化 ================= */
+        init(); animate();
+        function init() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x000000, 10, 150);
+
+            camera = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, .1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(innerWidth, innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            scene.add(new THREE.AmbientLight(0xffffff, .4));
+            const dl = new THREE.DirectionalLight(0xffffff, 1);
+            dl.position.set(10, 20, 10); scene.add(dl);
+
+            /* 地面 */
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(500, 500, 50, 50),
+                new THREE.MeshBasicMaterial({ color: 0x00ffaa, wireframe: true, opacity: .35 })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
+
+            /* プレイヤー */
+            player = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 2, 1),
+                new THREE.MeshStandardMaterial({ color: 0x00ffff })
+            );
+            player.position.y = 1;
+            scene.add(player);
+
+            /* 入力 */
+            addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
+            addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+            addEventListener("mousemove", e => {
+                if (document.pointerLockElement && gameState === "play")
+                    targetYaw -= e.movementX * 0.002;
+            });
+
+            addEventListener("mousedown", e => {
+                if (e.button === 0 && gameState === "play" && dashTimer === 0 && dashCooldown === 0) {
+                    dashTimer = DASH_DURATION;
+                    dashCooldown = DASH_COOLDOWN;
+                    playSound("dash");
+                }
+            });
+        }
+
+        /* ================= 敵 ================= */
+        function spawnEnemy() {
+            const type = Math.random() < .5 ? "orbit" : "chase";
+            const m = new THREE.Mesh(
+                new THREE.SphereGeometry(.7, 12, 12),
+                new THREE.MeshStandardMaterial({ color: type === "orbit" ? 0xff5555 : 0xffaa00 })
+            );
+            const a = Math.random() * Math.PI * 2;
+            m.position.set(Math.cos(a) * 30, 1, Math.sin(a) * 30);
+            scene.add(m);
+            enemies.push({ mesh: m, type, angle: a, shoot: 60 });
+        }
+
+        function enemyShoot(e) {
+            playSound("shoot");
+            const dir = new THREE.Vector3().subVectors(player.position, e.mesh.position).normalize();
+            const b = new THREE.Mesh(
+                new THREE.SphereGeometry(.2, 8, 8),
+                new THREE.MeshBasicMaterial({ color: 0xff0000 })
+            );
+            b.position.copy(e.mesh.position);
+            scene.add(b);
+            bullets.push({ mesh: b, vel: dir.multiplyScalar(.4) });
+        }
+
+        /* ================= ゴール ================= */
+        function createGoal() {
+            goal = new THREE.Mesh(
+                new THREE.TorusGeometry(1.5, .3, 16, 32),
+                new THREE.MeshBasicMaterial({ color: 0xffff00 })
+            );
+            const a = Math.random() * Math.PI * 2;
+            const d = 40;
+            goal.position.set(Math.cos(a) * d, 1, Math.sin(a) * d);
+            scene.add(goal);
+            goalReady = true;
+            uiGoal.textContent = "ACTIVE";
+            playSound("goal");
+        }
+
+        /* ================= 更新 ================= */
+        function update() {
+            if (gameState !== "play") return;
+
+            if (dashTimer > 0) dashTimer--;
+            if (dashCooldown > 0) dashCooldown--;
+
+            uiDash.textContent = dashCooldown > 0 ? "COOLDOWN" : "READY";
+
+            const t = (Date.now() - startTime) / 1000;
+            uiTime.textContent = t.toFixed(1);
+
+            if (!goalReady && t > GOAL_TIME) createGoal();
+            if (Math.random() < 0.02 && enemies.length < 6 + stage * 2) spawnEnemy();
+
+            const speed = dashTimer > 0 ? DASH_SPEED : NORMAL_SPEED;
+
+            const forward = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw));
+            const right = new THREE.Vector3(Math.sin(yaw + Math.PI / 2), 0, Math.cos(yaw + Math.PI / 2));
+
+            if (keys.w) player.position.addScaledVector(forward, -speed);
+            if (keys.s) player.position.addScaledVector(forward, speed);
+            if (keys.a) player.position.addScaledVector(right, -speed);
+            if (keys.d) player.position.addScaledVector(right, speed);
+
+            yaw += (targetYaw - yaw) * 0.1;
+
+            const camDist = slowTimer > 0 ? 8 : 15;
+            camera.position.copy(player.position)
+                .add(new THREE.Vector3(Math.sin(yaw) * camDist, 7, Math.cos(yaw) * camDist));
+            camera.lookAt(player.position);
+
+            enemies = enemies.filter(e => {
+                const d = e.mesh.position.distanceTo(player.position);
+                if (e.type === "orbit") {
+                    e.angle += 0.01;
+                    e.mesh.position.x = player.position.x + Math.cos(e.angle) * 8;
+                    e.mesh.position.z = player.position.z + Math.sin(e.angle) * 8;
+                } else {
+                    e.mesh.position.lerp(player.position, .02);
+                }
+                e.shoot--;
+                if (e.shoot <= 0 && d > 4) { enemyShoot(e); e.shoot = 80; }
+
+                if (d < 1.5 && dashTimer === 0) {   // ★ Dash中は無敵
+                    hp -= 20; playSound("damage");
+                    uiHP.textContent = hp;
+                    scene.remove(e.mesh);
+                    return false;
+                }
+                return true;
+            });
+
+            bullets = bullets.filter(b => {
+                b.mesh.position.add(b.vel);
+                if (b.mesh.position.distanceTo(player.position) < 1 && dashTimer === 0) {
+                    hp -= 5; playSound("damage");
+                    uiHP.textContent = hp;
+                    scene.remove(b.mesh);
+                    return false;
+                }
+                return b.mesh.position.length() < 200;
+            });
+
+            if (goalReady && goal && hit(player, goal)) stageClear();
+            uiEnemy.textContent = enemies.length;
+            if (hp <= 0) gameOver();
+        }
+
+        function hit(a, b) {
+            return new THREE.Box3().setFromObject(a)
+                .intersectsBox(new THREE.Box3().setFromObject(b));
+        }
+
+        /* ================= ステージクリア ================= */
+        function stageClear() {
+            gameState = "clear";
+            playSound("clear");
+            flash.style.opacity = 1;
+            setTimeout(() => flash.style.opacity = 0, 120);
+            slowTimer = 120;
+            setTimeout(() => {
+                overlay.innerHTML = `<h1>STAGE ${stage} CLEAR</h1><button onclick="nextStage()">NEXT</button>`;
+                overlay.style.display = "flex";
+                document.exitPointerLock();
+            }, 1200);
+        }
+
+        function nextStage() {
+            stage++;
+            startStage();
+        }
+
+        function startStage() {
+            playSound("start");
+            player.position.set(0, 1, 0);
+            enemies.forEach(e => scene.remove(e.mesh));
+            bullets.forEach(b => scene.remove(b.mesh));
+            enemies = []; bullets = [];
+            goalReady = false;
+            if (goal) { scene.remove(goal); goal = null; }
+            hp = MAX_HP;
+            uiHP.textContent = hp;
+            uiStage.textContent = stage;
+            uiGoal.textContent = "WAIT";
+            startTime = Date.now();
+            gameState = "play";
+            overlay.style.display = "none";
+            document.body.requestPointerLock();
+        }
+
+        function gameOver() {
+            gameState = "over";
+            overlay.innerHTML = `<h1>GAME OVER</h1><button onclick="location.reload()">RETRY</button>`;
+            overlay.style.display = "flex";
+            document.exitPointerLock();
+        }
+
+        /* ================= ループ ================= */
+        function animate() {
+            requestAnimationFrame(animate);
+            if (slowTimer > 0) slowTimer--;
+            update();
+            renderer.render(scene, camera);
+        }
+
+        document.getElementById("startBtn").onclick = () => {
+            audioCtx.resume();
+            startStage();
+        };
+    </script>
+</body>
+
+</html>

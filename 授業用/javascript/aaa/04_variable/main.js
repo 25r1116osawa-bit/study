@@ -87,9 +87,16 @@
 // output.innerHTML += '<br>'
 // output.innerHTML += mix1
 
-let human = {
-  name: "大石さん",
-  type: "女性",
+const pokemon = { 
+
+  // プロパティ（情報のようなイメージ　日本語でいうと、名詞がよく使われる。）
+  name: "ピカチュウ",   
+  type: "雷" ,
+
+  // メソッド 
+  attack(){ 
+     console.log("ピカチュウは10まんボルトを使った！")
+  }
 };
 
-
+pokemon.attack()

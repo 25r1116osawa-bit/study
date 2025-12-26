@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 集中講座：インタラクティブ学習ガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #fdfdfd; color: #333; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto; height: 300px; max-height: 400px; }
+        .code-block { background-color: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        .interactive-card { transition: all 0.3s ease; }
+        .interactive-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .dom-node { transition: all 0.3s; }
+        .highlight-anim { animation: highlight 1s ease-out; }
+        @keyframes highlight {
+            0% { background-color: #fde047; }
+            100% { background-color: transparent; }
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals (Slate/Gray/White) with JavaScript Yellow (#F7DF1E) and Blue (#3B82F6) accents for semantic highlighting. -->
+    <!-- Application Structure Plan: 
+         1. Hero Section: High-level overview of JS role vs HTML/CSS.
+         2. Domain Landscape: Visualization of JS use cases (Front/Back/Mobile/Desktop) using Chart.js.
+         3. Core Mechanics Lab: Interactive playground for Variables (const vs let) and Data Types.
+         4. Advanced Concepts Simulator: 
+            - Event Loop visualizer (Queue vs Stack).
+            - Type Coercion calculator/explainer.
+         5. DOM Playground: A sandbox to manipulate a mini DOM tree and see code reflect actions.
+         Rationale: This structure moves from "What is it?" to "How does it work?" to "Try it out", facilitating active learning.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <div class="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center font-bold text-slate-900">JS</div>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">JS集中講座</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('intro')" class="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition">概要 & 用途</button>
+                    <button onclick="scrollToSection('basics')" class="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition">基本要素</button>
+                    <button onclick="scrollToSection('advanced')" class="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition">特有の機能</button>
+                    <button onclick="scrollToSection('dom')" class="text-slate-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition">DOM操作</button>
+                </div>
+                <!-- Mobile menu button stub -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-slate-900 focus:outline-none p-2">
+                        <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                        <span class="block w-6 h-0.5 bg-current mb-1"></span>
+                        <span class="block w-6 h-0.5 bg-current"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 py-2">
+            <button onclick="scrollToSection('intro')" class="block w-full text-left py-2 text-slate-600">概要 & 用途</button>
+            <button onclick="scrollToSection('basics')" class="block w-full text-left py-2 text-slate-600">基本要素</button>
+            <button onclick="scrollToSection('advanced')" class="block w-full text-left py-2 text-slate-600">特有の機能</button>
+            <button onclick="scrollToSection('dom')" class="block w-full text-left py-2 text-slate-600">DOM操作</button>
+        </div>
+    </nav>
+
+    <!-- Hero / Intro Section -->
+    <section id="intro" class="py-12 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Webの「動き」を支配する言語</h1>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                HTMLが「骨組み」、CSSが「見た目」なら、<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-semibold">JavaScriptは「動作」</span>です。<br>
+                Webブラウザだけでなく、サーバーやアプリ開発まで、その活躍の場は広がり続けています。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <!-- 3 Pillars Concept -->
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4 border-l-4 border-blue-500 pl-4">Web開発の3大要素</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 interactive-card">
+                        <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg">H</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">HTML (構造)</h4>
+                            <p class="text-sm text-slate-500">テキスト、画像の配置など、ページの骨格を作ります。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 interactive-card">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">C</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">CSS (装飾)</h4>
+                            <p class="text-sm text-slate-500">色、フォント、レイアウトなど、デザインを定義します。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-400 flex items-center gap-4 interactive-card transform scale-105">
+                        <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-bold text-lg">JS</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">JavaScript (動作)</h4>
+                            <p class="text-sm text-slate-500">クリック時の処理、データの送受信、動的更新を担います。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization of Usage -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                <div class="mb-4">
+                    <h3 class="text-lg font-bold text-slate-800">進化するJavaScriptの用途</h3>
+                    <p class="text-sm text-slate-500">ブラウザの外でもJSは動作します。主要な実行環境の分布イメージ。</p>
+                </div>
+                <!-- Visualization & Content Choices: 
+                     Use: Chart.js Doughnut Chart
+                     Goal: Visually categorize the "Usage Fields" mentioned in Section 1.
+                     Why: A list is good, but a chart emphasizes that JS is a multi-purpose language.
+                -->
+                <div class="chart-container">
+                    <canvas id="usageChart"></canvas>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs text-slate-500 text-center">
+                    <div class="bg-slate-50 p-2 rounded">
+                        <span class="block font-bold text-blue-600">フロントエンド</span>
+                        Webブラウザ UI
+                    </div>
+                    <div class="bg-slate-50 p-2 rounded">
+                        <span class="block font-bold text-green-600">バックエンド</span>
+                        Node.js / API
+                    </div>
+                    <div class="bg-slate-50 p-2 rounded">
+                        <span class="block font-bold text-purple-600">モバイル</span>
+                        React Native
+                    </div>
+                    <div class="bg-slate-50 p-2 rounded">
+                        <span class="block font-bold text-slate-600">デスクトップ</span>
+                        Electron
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Basics Section -->
+    <section id="basics" class="py-16 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">2. JavaScriptの基本要素</h2>
+                <p class="text-slate-600 mt-2">変数、データ型、関数といったプログラミングの基礎を、実際に値を操作して確認しましょう。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Variables Lab -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold">var</span>
+                        変数と定数 (let vs const)
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-6"><code>const</code> は再代入不可、<code>let</code> は可能です。スイッチを切り替えて挙動を確認してください。</p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-lg">
+                            <div class="flex flex-col gap-2">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="varType" value="let" class="form-radio text-blue-600" onchange="updateVarLab()">
+                                    <span class="ml-2 font-mono text-sm">let name = "田中";</span>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="varType" value="const" class="form-radio text-red-600" checked onchange="updateVarLab()">
+                                    <span class="ml-2 font-mono text-sm">const name = "田中";</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-mono text-slate-500">実行:</span>
+                            <button onclick="attemptReassign()" class="bg-slate-800 text-white px-4 py-2 rounded text-sm hover:bg-slate-700 transition">
+                                name = "佐藤"; (再代入)
+                            </button>
+                        </div>
+
+                        <div id="varResult" class="p-3 bg-gray-100 rounded text-sm font-mono min-h-[3rem] flex items-center">
+                            <!-- JS will populate this -->
+                            結果がここに表示されます...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Types Grid -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-teal-100 text-teal-600 flex items-center justify-center text-sm font-bold">dat</span>
+                        プリミティブ型 (Data Types)
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">クリックして各型の詳細と例を確認しましょう。</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <button onclick="showTypeInfo('string')" class="p-3 rounded border border-slate-200 hover:bg-teal-50 hover:border-teal-200 transition text-left group">
+                            <div class="font-mono text-teal-600 font-bold group-hover:text-teal-700">string</div>
+                            <div class="text-xs text-slate-400 mt-1">文字列</div>
+                        </button>
+                        <button onclick="showTypeInfo('number')" class="p-3 rounded border border-slate-200 hover:bg-blue-50 hover:border-blue-200 transition text-left group">
+                            <div class="font-mono text-blue-600 font-bold group-hover:text-blue-700">number</div>
+                            <div class="text-xs text-slate-400 mt-1">数値</div>
+                        </button>
+                        <button onclick="showTypeInfo('boolean')" class="p-3 rounded border border-slate-200 hover:bg-purple-50 hover:border-purple-200 transition text-left group">
+                            <div class="font-mono text-purple-600 font-bold group-hover:text-purple-700">boolean</div>
+                            <div class="text-xs text-slate-400 mt-1">真偽値</div>
+                        </button>
+                        <button onclick="showTypeInfo('null')" class="p-3 rounded border border-slate-200 hover:bg-gray-50 hover:border-gray-300 transition text-left group">
+                            <div class="font-mono text-gray-500 font-bold group-hover:text-gray-700">null</div>
+                            <div class="text-xs text-slate-400 mt-1">空値</div>
+                        </button>
+                        <button onclick="showTypeInfo('undefined')" class="p-3 rounded border border-slate-200 hover:bg-orange-50 hover:border-orange-200 transition text-left group">
+                            <div class="font-mono text-orange-500 font-bold group-hover:text-orange-700">undefined</div>
+                            <div class="text-xs text-slate-400 mt-1">未定義</div>
+                        </button>
+                    </div>
+                    <div id="typeInfoBox" class="mt-4 p-4 bg-slate-50 border-l-4 border-teal-500 rounded-r text-sm">
+                        <p class="font-bold text-slate-700" id="typeTitle">型を選択してください</p>
+                        <p class="text-slate-600 mt-1" id="typeDesc">上のボタンをクリックすると詳細が表示されます。</p>
+                        <code class="block mt-2 bg-white p-2 rounded border border-slate-200 text-xs text-slate-500" id="typeExample">// 例</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features Section -->
+    <section id="advanced" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">3. JavaScript特有の機能</h2>
+            <p class="text-slate-600 mt-2">他の言語とは異なる、JSのユニークな挙動（非同期処理、型強制）をシミュレーションで理解します。</p>
+        </div>
+
+        <div class="space-y-12">
+            <!-- Event Loop Simulator -->
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+                <div class="p-6 md:p-8 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
+                    <h3 class="text-2xl font-bold mb-2">イベントループと非同期処理</h3>
+                    <p class="text-slate-300 text-sm md:w-2/3">
+                        JSはシングルスレッドですが、時間のかかる処理（タイマーやAPI通信）を「Web API」に任せ、
+                        完了後に「キュー」に入れて実行することで、画面をフリーズさせずに処理を行います。
+                    </p>
+                </div>
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Control -->
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-slate-700 border-b pb-2">操作パネル</h4>
+                        <p class="text-sm text-slate-500">ボタンを押してタスクを追加しましょう。</p>
+                        <button onclick="addSyncTask()" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition text-left flex justify-between items-center">
+                            <span>1. 同期タスクを追加</span>
+                            <span class="text-xs bg-white px-2 py-1 rounded">即時</span>
+                        </button>
+                        <button onclick="addAsyncTask()" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold py-2 px-4 rounded transition text-left flex justify-between items-center">
+                            <span>2. 非同期タスク (3秒)</span>
+                            <span class="text-xs bg-white px-2 py-1 rounded">Web APIへ</span>
+                        </button>
+                    </div>
+
+                    <!-- Visualization Area -->
+                    <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Main Thread Stack -->
+                        <div class="border-2 border-slate-200 border-dashed rounded-lg p-4 min-h-[200px] relative bg-slate-50">
+                            <span class="absolute top-2 left-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Main Thread (Stack)</span>
+                            <div id="mainStack" class="mt-6 space-y-2 flex flex-col-reverse">
+                                <!-- Tasks appear here -->
+                            </div>
+                        </div>
+
+                        <!-- Web API & Queue -->
+                        <div class="space-y-4">
+                            <div class="border border-slate-200 rounded-lg p-4 bg-yellow-50 min-h-[80px] relative">
+                                <span class="absolute top-2 left-2 text-xs font-bold text-yellow-600 uppercase tracking-wider">Web API (Background)</span>
+                                <div id="webApiArea" class="mt-4 flex gap-2 flex-wrap">
+                                    <!-- Async tasks waiting -->
+                                </div>
+                            </div>
+                            <div class="flex justify-center text-2xl text-slate-300">⬇️ Callback</div>
+                            <div class="border border-slate-200 rounded-lg p-4 bg-green-50 min-h-[80px] relative">
+                                <span class="absolute top-2 left-2 text-xs font-bold text-green-600 uppercase tracking-wider">Callback Queue</span>
+                                <div id="callbackQueue" class="mt-4 space-y-1">
+                                    <!-- Finished async tasks wait here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coercion Calculator -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">型強制 (Type Coercion) 実験室</h3>
+                    <p class="text-sm text-slate-500 mb-4">
+                        <code>'10' + 5</code> と <code>'10' - 5</code> の結果が違う理由を実験してみましょう。
+                    </p>
+                    
+                    <div class="flex flex-col gap-4 bg-slate-50 p-6 rounded-lg">
+                        <div class="flex items-center gap-2 text-xl font-mono">
+                            <select id="coercionLeft" class="p-2 border rounded bg-white" onchange="calcCoercion()">
+                                <option value="'10'">String: '10'</option>
+                                <option value="10">Number: 10</option>
+                                <option value="true">Boolean: true</option>
+                            </select>
+                            <select id="coercionOp" class="p-2 border rounded bg-white font-bold text-blue-600" onchange="calcCoercion()">
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                            </select>
+                            <select id="coercionRight" class="p-2 border rounded bg-white" onchange="calcCoercion()">
+                                <option value="5">Number: 5</option>
+                                <option value="'5'">String: '5'</option>
+                                <option value="1">Number: 1</option>
+                            </select>
+                        </div>
+                        <div class="border-t border-slate-200 my-2"></div>
+                        <div class="text-right">
+                            <span class="text-sm text-slate-400 mr-2">結果:</span>
+                            <span id="coercionResult" class="text-3xl font-bold text-slate-800">105</span>
+                            <span id="coercionType" class="block text-xs font-mono text-slate-500 mt-1">(string)</span>
+                        </div>
+                        <div id="coercionExplain" class="text-sm text-slate-600 bg-yellow-50 p-2 rounded border border-yellow-100">
+                            文字列結合が発生しました。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prototype Chain Visual -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">プロトタイプチェーン</h3>
+                    <p class="text-sm text-slate-500 mb-4">
+                        オブジェクトがプロパティを探すとき、自身の親（プロトタイプ）を遡る仕組みを可視化します。
+                    </p>
+
+                    <div class="relative pl-4 border-l-2 border-slate-200 space-y-6">
+                        <!-- Parent -->
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-4 w-4 h-4 bg-slate-200 rounded-full border-2 border-white"></div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <span class="text-xs font-bold text-slate-400 uppercase">Prototype (親)</span>
+                                <div class="font-mono text-sm mt-1 text-slate-600">
+                                    greet: function() { ... }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div class="text-center text-slate-300 text-lg">⬆️ [[Prototype]]</div>
+
+                        <!-- Child -->
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-4 w-4 h-4 bg-blue-500 rounded-full border-2 border-white"></div>
+                            <div class="bg-blue-50 p-4 rounded border border-blue-200 shadow-sm">
+                                <span class="text-xs font-bold text-blue-500 uppercase">MyObject (子)</span>
+                                <div class="font-mono text-sm mt-1 text-slate-800 font-bold">
+                                    name: "ユーザー"
+                                </div>
+                                <div class="mt-2 pt-2 border-t border-blue-100 text-xs text-slate-600">
+                                    <code>MyObject.greet()</code> を呼ぶと...<br>
+                                    1. 自身に <code>greet</code> があるか確認 (ない)<br>
+                                    2. プロトタイプチェーンを遡る<br>
+                                    3. 親にある <code>greet</code> を実行！
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOM Section -->
+    <section id="dom" class="py-16 bg-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">4. DOM操作 プレイグラウンド</h2>
+                <p class="text-slate-600 mt-2">JavaScriptを使ってHTML要素（DOM）を操作する様子を体験してください。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- The Code & Controls -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h4 class="font-bold text-slate-700 mb-4">コントロールパネル</h4>
+                        <div class="space-y-3">
+                            <button onclick="changeDomText()" class="w-full bg-slate-800 text-white px-4 py-3 rounded hover:bg-slate-700 transition flex items-center justify-between group">
+                                <span>テキストを変更</span>
+                                <code class="text-xs text-slate-400 group-hover:text-white transition">.textContent = "..."</code>
+                            </button>
+                            <button onclick="changeDomColor()" class="w-full bg-blue-600 text-white px-4 py-3 rounded hover:bg-blue-500 transition flex items-center justify-between group">
+                                <span>スタイルを変更 (色)</span>
+                                <code class="text-xs text-blue-200 group-hover:text-white transition">.style.color = "red"</code>
+                            </button>
+                            <button onclick="addDomElement()" class="w-full bg-green-600 text-white px-4 py-3 rounded hover:bg-green-500 transition flex items-center justify-between group">
+                                <span>要素を追加</span>
+                                <code class="text-xs text-green-200 group-hover:text-white transition">.appendChild(...)</code>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block text-sm h-48 overflow-y-auto" id="domLog">
+                        <span class="text-slate-500">// 操作ログがここに表示されます</span>
+                    </div>
+                </div>
+
+                <!-- The DOM Visualizer -->
+                <div class="bg-white p-8 rounded-xl shadow-lg border-2 border-slate-200 flex flex-col items-center justify-center min-h-[300px] relative">
+                    <span class="absolute top-2 left-2 text-xs font-bold text-slate-300">WEB BROWSER VIEW</span>
+                    
+                    <!-- Target Elements -->
+                    <div id="targetContainer" class="text-center space-y-4 w-full">
+                        <h3 id="targetTitle" class="text-2xl font-bold text-slate-800 dom-node p-2 rounded">こんにちは！</h3>
+                        <p id="targetDesc" class="text-slate-500 dom-node">ここがJavaScriptによって操作されます。</p>
+                        <div id="extraArea" class="space-y-2 pt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">JavaScript Lecture Material Interactive Guide</p>
+            <p class="text-xs mt-2 text-slate-600">Created for Educational Purposes</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Navigation & Scroll ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+            // Close mobile menu if open
+            const menu = document.getElementById('mobile-menu');
+            if(!menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // --- 2. Chart.js Implementation (Intro Section) ---
+        // Visualization Choice: Doughnut chart to visualize usage distribution roughly based on importance/context
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('usageChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['フロントエンド (Browser)', 'バックエンド (Node.js)', 'モバイル (Native)', 'デスクトップ (Electron)'],
+                    datasets: [{
+                        data: [50, 30, 10, 10], // Estimated relative importance for a beginner context
+                        backgroundColor: [
+                            '#3B82F6', // Blue-500
+                            '#22C55E', // Green-500
+                            '#A855F7', // Purple-500
+                            '#64748B'  // Slate-500
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Noto Sans JP', sans-serif" },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+            
+            // Initialize other components
+            calcCoercion();
+        });
+
+        // --- 3. Variables Lab Logic ---
+        let currentVarState = "田中";
+        
+        function updateVarLab() {
+            // Reset state visually when switching types
+            currentVarState = "田中";
+            document.getElementById('varResult').innerHTML = '<span class="text-slate-400">初期状態: name = "田中"</span>';
+            document.getElementById('varResult').className = "p-3 bg-gray-100 rounded text-sm font-mono min-h-[3rem] flex items-center";
+        }
+
+        function attemptReassign() {
+            const radios = document.getElementsByName('varType');
+            let selectedType;
+            for(const r of radios) { if(r.checked) selectedType = r.value; }
+
+            const resBox = document.getElementById('varResult');
+            
+            if (selectedType === 'let') {
+                currentVarState = "佐藤";
+                resBox.innerHTML = '<span class="text-green-600 font-bold">成功:</span> name は "佐藤" になりました。';
+                resBox.className = "p-3 bg-green-50 border border-green-200 rounded text-sm font-mono min-h-[3rem] flex items-center";
+            } else {
+                resBox.innerHTML = '<span class="text-red-600 font-bold">エラー:</span> TypeError: Assignment to constant variable.<br>(定数は再代入できません)';
+                resBox.className = "p-3 bg-red-50 border border-red-200 rounded text-sm font-mono min-h-[3rem] flex items-center";
+            }
+        }
+
+        // --- 4. Data Types Logic ---
+        const typeData = {
+            'string': { title: 'String (文字列)', desc: '文字の並びを表します。ダブルクォート(") またはシングルクォート(\') で囲みます。', example: 'let text = "こんにちは";' },
+            'number': { title: 'Number (数値)', desc: '整数や小数を扱います。計算に使用できます。', example: 'let price = 100;\nlet pi = 3.14;' },
+            'boolean': { title: 'Boolean (真偽値)', desc: 'true (真) または false (偽) のどちらかの値をとります。条件分岐によく使われます。', example: 'let isDone = true;' },
+            'null': { title: 'Null', desc: '「値が存在しない」ことを意図的に示す特別な値です。', example: 'let result = null;' },
+            'undefined': { title: 'Undefined', desc: '変数が宣言されたが、まだ値が代入されていない状態です。', example: 'let data;\nconsole.log(data); // undefined' }
+        };
+
+        function showTypeInfo(type) {
+            const info = typeData[type];
+            document.getElementById('typeTitle').textContent = info.title;
+            document.getElementById('typeDesc').textContent = info.desc;
+            document.getElementById('typeExample').innerText = info.example;
+            
+            const box = document.getElementById('typeInfoBox');
+            // Remove all specific border colors
+            box.className = box.className.replace(/border-\w+-500/g, '');
+            
+            // Add specific color
+            const colors = { 'string': 'teal', 'number': 'blue', 'boolean': 'purple', 'null': 'gray', 'undefined': 'orange' };
+            box.classList.add(`border-${colors[type]}-500`);
+            
+            // Subtle animation
+            box.classList.remove('opacity-100');
+            void box.offsetWidth; // trigger reflow
+            box.classList.add('opacity-100');
+        }
+
+        // --- 5. Event Loop Simulator Logic ---
+        function addSyncTask() {
+            const stack = document.getElementById('mainStack');
+            const task = document.createElement('div');
+            task.className = 'bg-blue-600 text-white p-2 rounded shadow text-center text-sm font-bold animate-pulse';
+            task.textContent = '同期タスク (console.log)';
+            stack.appendChild(task);
+
+            // Execute immediately (remove after short delay)
+            setTimeout(() => {
+                task.remove();
+            }, 800);
+        }
+
+        function addAsyncTask() {
+            const webApi = document.getElementById('webApiArea');
+            const task = document.createElement('div');
+            task.className = 'bg-yellow-400 text-yellow-900 p-2 rounded shadow text-xs font-bold w-full text-center transition-all duration-[3000ms] ease-linear';
+            task.textContent = 'Timer (3s)...';
+            task.style.width = '0%';
+            webApi.appendChild(task);
+
+            // Simulate Web API processing
+            setTimeout(() => {
+                task.style.width = '100%';
+            }, 100);
+
+            setTimeout(() => {
+                task.remove();
+                moveToQueue();
+            }, 3000);
+        }
+
+        function moveToQueue() {
+            const queue = document.getElementById('callbackQueue');
+            const cb = document.createElement('div');
+            cb.className = 'bg-green-500 text-white p-2 rounded shadow text-xs font-bold text-center';
+            cb.textContent = 'Callback Fn';
+            queue.appendChild(cb);
+
+            // Event Loop Check: If stack is empty (simulated by simple timeout here), move to stack
+            setTimeout(() => {
+                cb.remove();
+                runCallbackInStack();
+            }, 1000);
+        }
+
+        function runCallbackInStack() {
+            const stack = document.getElementById('mainStack');
+            const task = document.createElement('div');
+            task.className = 'bg-green-600 text-white p-2 rounded shadow text-center text-sm font-bold border-2 border-yellow-400';
+            task.textContent = 'Callback実行中';
+            stack.appendChild(task);
+            setTimeout(() => {
+                task.remove();
+            }, 800);
+        }
+
+        // --- 6. Type Coercion Logic ---
+        function calcCoercion() {
+            const leftVal = document.getElementById('coercionLeft').value;
+            const op = document.getElementById('coercionOp').value;
+            const rightVal = document.getElementById('coercionRight').value;
+
+            // Parse values to real JS types for calculation
+            const parseVal = (v) => {
+                if(v === 'true') return true;
+                if(v.startsWith("'")) return v.replace(/'/g, ""); // string
+                return Number(v); // number
+            };
+
+            const l = parseVal(leftVal);
+            const r = parseVal(rightVal);
+            let res;
+
+            if (op === '+') res = l + r;
+            else res = l - r;
+
+            // Update UI
+            document.getElementById('coercionResult').textContent = typeof res === 'string' ? `'${res}'` : res;
+            document.getElementById('coercionType').textContent = `(${typeof res})`;
+
+            // Generate explanation
+            let explain = "";
+            if (op === '+' && (typeof l === 'string' || typeof r === 'string')) {
+                explain = "【文字列結合】 片方が文字列のため、もう一方も文字列に変換され結合されました。";
+            } else if (op === '-') {
+                explain = "【数値変換】 引き算(-)は数値のみで有効なため、文字列が数値に変換されました。";
+            } else if (typeof l === 'boolean') {
+                 explain = `【Boolean変換】 true は数値の 1 に変換されて計算されました。`;
+            } else {
+                explain = "通常の数値計算が行われました。";
+            }
+            document.getElementById('coercionExplain').textContent = explain;
+        }
+
+        // --- 7. DOM Playground Logic ---
+        const domLog = document.getElementById('domLog');
+
+        function logAction(msg) {
+            const line = document.createElement('div');
+            line.textContent = `> ${msg}`;
+            line.className = "mb-1 border-b border-gray-700 pb-1";
+            domLog.insertBefore(line, domLog.firstChild);
+        }
+
+        function changeDomText() {
+            const title = document.getElementById('targetTitle');
+            title.textContent = "変更されました！";
+            title.classList.remove('highlight-anim');
+            void title.offsetWidth; 
+            title.classList.add('highlight-anim');
+            
+            logAction('document.getElementById("title").textContent = "変更されました！";');
+        }
+
+        function changeDomColor() {
+            const title = document.getElementById('targetTitle');
+            const desc = document.getElementById('targetDesc');
+            
+            // Random color for fun
+            const colors = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            title.style.color = color;
+            desc.style.color = color;
+            
+            logAction(`document.getElementById("title").style.color = "${color}";`);
+        }
+
+        function addDomElement() {
+            const container = document.getElementById('extraArea');
+            const newEl = document.createElement('div');
+            newEl.textContent = "📦 新しい要素";
+            newEl.className = "p-2 bg-slate-100 rounded border border-slate-300 text-sm font-bold animate-bounce";
+            container.appendChild(newEl);
+            
+            logAction('const el = document.createElement("div"); box.appendChild(el);');
+            
+            // Remove animation class after a bit so it doesn't bounce forever
+            setTimeout(() => newEl.classList.remove('animate-bounce'), 1000);
+        }
+
+    </script>
+</body>
+</html>
