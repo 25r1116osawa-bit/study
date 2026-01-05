@@ -1,38 +1,32 @@
 {
   "compilerOptions": {
-    // File Layout
+    // ファイルの場所
     "rootDir": "./src",
     "outDir": "./dist",
 
-    // Environment Settings
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "target": "esnext",
+    // 環境設定
+    "module": "commonjs",   // ← ここを nodenext → commonjs に変更
+    "target": "es2017",     // Node 24 なら es2017 で十分
     "types": [],
 
-    // Other Outputs
+    // その他の出力
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
 
-    // Stricter Typechecking Options
+    // 厳格な型チェック
+    "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    "lib": [
-        "esNext",
-        "dom"
-    ],
+    // ライブラリ
+    "lib": ["esnext", "dom"],
 
-    // Recommended Options
-    "strict": true,
+    // 推奨オプション
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
     "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }

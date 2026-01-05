@@ -66,3 +66,5 @@ class Inventory implements Product{
     }
     
 }
+
+console.log("aiueo");
