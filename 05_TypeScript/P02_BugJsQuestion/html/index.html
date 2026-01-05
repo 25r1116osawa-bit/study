@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闇の在庫管理システム - 破壊されたUI</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; color: #333; margin: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #d32f2f; border-bottom: 2px solid #ef9a9a; padding-bottom: 5px; margin-top: 20px; }
+        .item-card { background-color: #ffebee; border: 1px solid #ef9a9a; border-radius: 5px; padding: 10px; margin-bottom: 10px; display: flex; align-items: center; }
+        .item-card.out-of-stock { opacity: 0.5; background-color: #eee; }
+        .item-card.critical-error { background-color: #ffdddd; border-color: #f44336; }
+        .item-card div { flex-grow: 1; }
+        .item-card span { font-weight: bold; margin-right: 5px; }
+        button { background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        button:hover { background-color: #45a049; }
+        .total-value { font-size: 1.5em; font-weight: bold; text-align: right; margin-top: 20px; color: #1a73e8; }
+        .error-message { color: red; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 闇の在庫管理システム 🚨</h1>
+        <p>このシステムは時々誤動作します。TypeScriptを使って、バグのない堅牢なシステムにしてください！</p>
+
+        <h2>商品一覧</h2>
+        <div id="inventory-list">
+            <p class="error-message" id="load-error" style="display:none;">商品データの読み込み中に不明なエラーが発生しました。</p>
+        </div>
+
+        <h2>在庫合計金額</h2>
+        <div class="total-value" id="total-value">
+            計算中...
+        </div>
+
+        <h2>商品操作（動作不安定）</h2>
+        <div>
+            <label for="item-id">商品ID:</label>
+            <input type="number" id="item-id" value="1">
+            <button id="update-button">ステータスを「在庫なし」にする</button>
+            <p id="update-message" style="color: blue;"></p>
+        </div>
+    </div>
+
+    <script src="inventory.js"></script>
+</body>
+</html>
