@@ -39,12 +39,6 @@ calcBtn.addEventListener('click',() => {
 
     const result: [BMICategory,number] = calcBMI(height,weight)
 
-    output.innerHTML = `
-    
-    BMI:${result[0]}
-    判定:${result[1]}
-
-
-    `
+    output.innerHTML = `BMI:${result[0]}判定:${result[1]} `
 
 })
