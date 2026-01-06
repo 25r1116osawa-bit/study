@@ -36,13 +36,7 @@ calcBtn.addEventListener('click', () => {
     const height = Number(heightInput.value);
     const weight = Number(weightInput.value);
     const result = calcBMI(height, weight);
-    output.innerHTML = `
-    
-    BMI:${result[0]}
-    判定:${result[1]}
-
-
-    `;
+    output.innerHTML = `BMI:${result[0]}判定:${result[1]} `;
 });
 export {};
 //# sourceMappingURL=script.js.map
