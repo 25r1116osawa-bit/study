@@ -22,13 +22,6 @@ var Category;
 })(Category || (Category = {}));
 // 在庫管理クラス
 class Inventory {
-    id;
-    productid;
-    name;
-    storage;
-    price;
-    category;
-    static number = 0;
     constructor(id, productid, name, storage, price, category) {
         Inventory.number++;
         this.id = id;
@@ -40,6 +33,7 @@ class Inventory {
     }
     // 売上(税抜き、税込み、税のみ)
     sales() {
+        // 消費税計算
         // 消費税計算
         const taxAmount = Math.floor(this.price * TAX);
         return {
