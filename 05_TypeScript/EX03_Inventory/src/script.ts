@@ -50,26 +50,27 @@ interface Product{
 // 在庫管理クラス
 class Inventory implements Product{
     
-    id: string
-    lotNumber: number
-    name: string
-    storage: number
-    price: number
-    category: Category
+    id: string //両方
+    lotNumber: number // 在庫
+    name: string  // マスター
+    storage: number // 在庫
+    price: number // マスター
+    category: Category // マスターにあるが番号で管理
 
-    static number: number = 0
+    static number: number = 0 //??? 
 
     constructor(id: string,name: string,storage: number,price: number,category: Category){
-        Inventory.number++
-        this.id = id
-        this.lotNumber = Inventory.number
-        this.name = name
-        this.storage = storage
-        this.price = price
-        this.category = category
+        Inventory.number++ // インスタンスが生成された際にカウントを増やす
+        this.id = id // 両方
+        this.lotNumber = Inventory.number // インスタンスが生成されるたびにロットナンバーを1増やす。
+        this.name = name //マスター
+        this.storage = storage // 在庫
+        this.price = price //マスター
+        this.category = category // マスターにあるが番号で管理
     }
 
     // 売上(税抜き、税込み、税のみ)
+    /*
     sales():{excludingTax:number,includingTax:number,taxAmount:number}{
         // 消費税計算
         const taxAmount = Math.floor(this.price * TAX)
@@ -82,7 +83,7 @@ class Inventory implements Product{
             taxAmount: taxAmount * this.storage
         }
     }
-
+    */
     // 情報出力
     dispInfo():void{
         console.info(this)
