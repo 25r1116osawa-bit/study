@@ -1,8 +1,16 @@
-// 商品マスター
+// 商品マスタ
 [
-    { "id": 1, "name": "りんご", "price": 100, "Category": 1 }
+    { "id": 1, "name": "完熟りんご", "price": 120, "category": 1 },
+    { "id": 2, "name": "天然水 500ml", "price": 100, "category": 2 },
+    { "id": 3, "name": "除菌ウェットティッシュ", "price": 350, "category": 3 },
+    { "id": 4, "name": "挽きたてコーヒー", "price": 450, "category": 2 },
+    { "id": 5, "name": "国産鶏むね肉", "price": 680, "category": 1 },
+    { "id": 6, "name": "オーガニック緑茶", "price": 150, "category": 2 },
+    { "id": 7, "name": "高級トイレットペーパー", "price": 880, "category": 3 },
+    { "id": 8, "name": "ミックスナッツ", "price": 980, "category": 1 },
+    { "id": 9, "name": "スポーツドリンク", "price": 160, "category": 2 },
+    { "id": 10, "name": "洗濯用洗剤 詰め替え", "price": 420, "category": 3 }
 ];
-console.log([0]);
 // 消費税
 const TAX = 0.1;
 // カテゴリ
@@ -32,6 +40,7 @@ class Inventory {
     }
     // 売上(税抜き、税込み、税のみ)
     sales() {
+        // 消費税計算
         const taxAmount = Math.floor(this.price * TAX);
         return {
             // 税抜き
@@ -43,5 +52,6 @@ class Inventory {
         };
     }
 }
+console.log("aiueo");
 export {};
 //# sourceMappingURL=script.js.map
