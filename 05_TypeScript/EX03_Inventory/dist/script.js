@@ -1,5 +1,16 @@
-// 商品マスタ
+// 商品マスター
 [
+    { "id": 1, "name": "完熟りんご", "price": 120, "category": 1 },
+    { "id": 2, "name": "天然水 500ml", "price": 100, "category": 2 },
+    { "id": 3, "name": "除菌ウェットティッシュ", "price": 350, "category": 3 },
+    { "id": 4, "name": "挽きたてコーヒー", "price": 450, "category": 2 },
+    { "id": 5, "name": "国産鶏むね肉", "price": 680, "category": 1 },
+    { "id": 6, "name": "オーガニック緑茶", "price": 150, "category": 2 },
+    { "id": 7, "name": "高級トイレットペーパー", "price": 880, "category": 3 },
+    { "id": 8, "name": "ミックスナッツ", "price": 980, "category": 1 },
+    { "id": 9, "name": "スポーツドリンク", "price": 160, "category": 2 },
+    { "id": 10, "name": "洗濯用洗剤 詰め替え", "price": 420, "category": 3 }
+];
     { "id": 1, "name": "完熟りんご", "price": 120, "category": 1 },
     { "id": 2, "name": "天然水 500ml", "price": 100, "category": 2 },
     { "id": 3, "name": "除菌ウェットティッシュ", "price": 350, "category": 3 },
