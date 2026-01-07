@@ -100,3 +100,17 @@ render は 画面に描画する仕組み
 root.render() は どこに表示するかを決める
 
 Reactは データの変化に反応するUIライブラリ
+
+
+props = {
+  text: "こんにちは"
+}
+分割代入
+ts
+コードをコピーする
+const { text } = props;
+結果は👇
+
+ts
+コードをコピーする
+const text = props.text;
