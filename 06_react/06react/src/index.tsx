@@ -9,6 +9,11 @@ import Props2 from './components/03Props2';
 import Props3 from './components/P01PropsList';
 import Context1 from './components/04Context';
 import Context11 from './components/05Context2';
+import UserListFrame from './components/P01PropsList';
+import PracticeFrame1 from './components/P02Context'
+import Hook1 from './components/06hook1';
+import Hook2 from './components/07hook2useState';
+import Counter01 from './components/P03userStateHook';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +26,12 @@ root.render(
     <Props3 />
     <Context1 />
     <Context11 />
+    <UserListFrame />
+    <PracticeFrame1 />
+    <Hook1 />
+    <Hook2 />
+    <Counter01 />
+
   </React.StrictMode>
 );
 
