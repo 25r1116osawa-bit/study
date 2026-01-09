@@ -30,7 +30,7 @@ const Context12 = () => {
 
 const Context13 = () => {
     const userContext = useContext(LoginUserContext)
-    return(
+    return (
         <div className="context3">
             {userContext}
             コンテキスト3層目

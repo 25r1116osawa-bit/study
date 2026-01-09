@@ -3,9 +3,9 @@ import { useState } from "react"
 const Hook2 = () => {
 
     // ステートフック
-    const [value,setValue] = useState('')
+    const [value, setValue] = useState('')
 
-    const onClick = () =>{
+    const onClick = () => {
         // データが変わっても画面が更新されないため、見た目に変化はない
         setValue('あいうえお')
         alert('aaaa')
@@ -14,7 +14,7 @@ const Hook2 = () => {
     return (
         <div>
             <input type="button" value="ぼたん" onClick={onClick} />
-            <input type="text" value={value}/>
+            <input type="text" value={value} />
         </div>
     )
 }
