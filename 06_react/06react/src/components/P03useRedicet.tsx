@@ -3,13 +3,14 @@
 import { useState } from "react"
 
 const Counter01 = () => {
+    // ステータスフックの設定(counter)
     let [count,setValue] = useState(0);
     
     
+    // クリックアクション(コールバック関数)
     let test = () => {
-        setValue(count +1)
+        setValue(count+1)
     }
-    
     
     return (
     <div>
