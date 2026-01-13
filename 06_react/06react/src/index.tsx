@@ -16,6 +16,7 @@ import Hook2 from './components/07hook2useState';
 import Counter01 from './components/P03useRedicet';
 import Hook3 from './components/08Hook3useReducer';
 import Counter02 from './components/P04userStateHook';
+import { ColorfulMessage } from './components/000ColorfulMessage';
 
 
 const root = ReactDOM.createRoot(
@@ -23,6 +24,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <ColorfulMessage/>
     <Hello />
     <Props text='あいうえお' />
     <Props2 text='かきくけこ'/>
