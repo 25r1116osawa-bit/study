@@ -9,7 +9,7 @@ export interface Personal{
 
 const Record = (props: {personal: Personal}) => {
 
-    console.log('レンダリング');
+    // console.log('レンダリング');
     
 
 
@@ -23,19 +23,19 @@ const Record = (props: {personal: Personal}) => {
 
     // 年齢加算ボタンのAction
     const doAddAge = () => {
-        console.log('ボタンクリック');
+       //  console.log('ボタンクリック');
         setAge(age+1)
     }
 
     useEffect(()=> {
-        console.log('エフェクト1');
+       //  console.log('エフェクト1');
         if(age >= 65){
             setMsg('定年です。')
         }
     },[age])
 
     useEffect(() => {
-        console.log('エフェクト2');
+      //   console.log('エフェクト2');
     },[msg])
 
    return (
