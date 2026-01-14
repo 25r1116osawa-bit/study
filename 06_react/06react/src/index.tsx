@@ -11,11 +11,14 @@ import Context1 from './components/04Context';
 import Context11 from './components/05Context2';
 import UserListFrame from './components/P01PropsList';
 import PracticeFrame1 from './components/P02Context'
-import Hook1 from './components/06hook1';
 import Hook2 from './components/07hook2useState';
 import Counter01 from './components/P03useRedicet';
 import Hook3 from './components/08Hook3useReducer';
 import Counter02 from './components/P04userStateHook';
+import Hook4 from './components/09Hook4useEffect'
+import Record from './components/10Hook5useEffect2'
+import Hook5 from './components/11Hook6CustomHook'
+import Counter03 from './components/P05useCounterHook'
 
 
 const root = ReactDOM.createRoot(
@@ -31,13 +34,14 @@ root.render(
     <Context11 />
     <UserListFrame />
     <PracticeFrame1 />
-    <Hook1 />
     <Hook2 />
     <Counter01 />
     <Hook3 />
     <Counter02/>
-    
-
+    <Hook4 />
+    <Record personal= {{name:"tatsuki",age:60,mail:"tatsuki@gmail.com"}}/>
+    <Hook5/>
+    <Counter03/>
   </React.StrictMode>
 );
 

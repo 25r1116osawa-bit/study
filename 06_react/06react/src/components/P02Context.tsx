@@ -24,8 +24,6 @@ const PracticeFrame1 = () => {
 const AuthorityElement1 = ({ text }: { text: string | null }) => {
     const person = {text}
 
-    console.log(person)
-
     const test = () =>{
         if(person.text === "管理者"){
           return  <button> 新規作成 </button>
