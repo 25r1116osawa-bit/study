@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "./compornent/header";
 import Footer from "./compornent/footer";
-import "../app/default/globals.css"
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,7 +30,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        
         {children}
         <Footer />
 
