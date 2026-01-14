@@ -26,6 +26,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <ColorfulMessage/>
     <Hello />
     <Props text='あいうえお' />
     <Props2 text='かきくけこ'/>
