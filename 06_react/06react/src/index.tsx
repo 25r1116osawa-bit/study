@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import Hello from './components/01Hello';
 import Props from './components/02Props';
 import Props2 from './components/03Props2';
-import Props3 from './components/P01PropsList';
 import Context1 from './components/04Context';
 import Context11 from './components/05Context2';
 import UserListFrame from './components/P01PropsList';
@@ -18,7 +17,7 @@ import Counter02 from './components/P04userStateHook';
 import Hook4 from './components/09Hook4useEffect'
 import Record from './components/10Hook5useEffect2'
 import Hook5 from './components/11Hook6CustomHook'
-import Counter03 from './components/P05useCounterHook'
+import  Counter03  from './components/P05useCounterHook';
 
 
 const root = ReactDOM.createRoot(
@@ -26,11 +25,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ColorfulMessage/>
     <Hello />
     <Props text='あいうえお' />
     <Props2 text='かきくけこ'/>
-    <Props3 />
     <Context1 />
     <Context11 />
     <UserListFrame />
