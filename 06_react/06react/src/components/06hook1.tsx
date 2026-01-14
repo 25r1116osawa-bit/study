@@ -1,4 +1,5 @@
 // Hookを使わずに値の変更を行ったとき
+
 const Hook1 = () => {
 
     let value = ''
@@ -11,9 +12,8 @@ const Hook1 = () => {
 
     return (
         <div>
-            <input type="button" value="ぼたん" onClick={onClick} />
+            <input type="button" value={value} onClick={onClick} />
             <input type="text" value={value} />
         </div>
     )
 }
-export default Hook1

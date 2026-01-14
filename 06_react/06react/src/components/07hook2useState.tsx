@@ -13,9 +13,8 @@ const Hook2 = () => {
 
     return (
         <div>
-            <input type="button" value="ぼたん" onClick={onClick} />
-            <input type="text" value={value} />
-        </div>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)}
+/>      </div>
     )
 }
 export default Hook2

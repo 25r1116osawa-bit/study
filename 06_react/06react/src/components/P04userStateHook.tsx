@@ -8,58 +8,42 @@
 import { useReducer } from "react"
 
 
-// 状態管理用の変数
-type ButtonState:number
-
-// リデューサーロジック アクションを持つことができる。
-type TodoAction = {buttunName:'ADD_BUTTUN',number:number} | {buttunName:'minus_BUTTUN',number:number} | {buttunName:'delete_BUTTUN',number:number} 
-
-// state: TodoState, action: TodoAction
 
 
-const ButtonReducer = (state:ButtonState , action:TodoAction) => {
-    switch (action.buttunName) {
+// アクションの型定義
+type CounterAction  = 'ADD_BUTTUN' | 'minus_BUTTUN'| 'delete_BUTTUN'
+
+
+// リデューサー関数
+const ButtonReducer = (state:number , action:CounterAction) => {
+    switch (action) {
         case 'ADD_BUTTUN':
-            return  (state + 1)
+            return  state + 1
 
         case 'minus_BUTTUN':
-            return  (state - 1)
+            return  state - 1
             
         case 'delete_BUTTUN':
-            return  (state = 0)
+            return  state = 0
 
         default:
-            break 
+           return state
     }
 }
 
 
-/* const Hook3 = () => {
-
-    // リデューサーフック usestateと書き方は変数のみで値と関数がセットになっているイメージ。
-    const [todos, dispatch] = useReducer(todoReducer, [])
-
-    // フォーム用ステータス
-    const [inputValue, setInputValue] = useState('')
-
-    const doActuion = () => {
-        dispatch({ type: 'ADD_TODO', payload: inputValue })
-        setInputValue('')
-    }
-*/
-
-
-const Counter02 = ( ) => {
-
-    const [todos, dispatch] = useReducer(ButtonReducer, [])
-
-    
+const Counter02 = () => {
+ // 第1引数：reducer 関数
+ // 第2引数：初期値（state）
+ 
+    const [counter, dispatch] = useReducer(ButtonReducer, 0)
     return (
         <div>
-            カウンター：0
-            <input type="button" value="加算" />
-            <input type="button" value="減算" />
-            <input type="button" value="リセット" />
+            カウンター：{counter}
+            <input type="button" value="加算" onClick={() => dispatch('ADD_BUTTUN')} />
+            <input type="button" value="減算" onClick={() => dispatch('minus_BUTTUN')} />
+            <input type="button" value="リセット" onClick={() => dispatch('delete_BUTTUN')} />
+            
         </div>
     )
 }

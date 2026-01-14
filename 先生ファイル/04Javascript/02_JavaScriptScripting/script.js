@@ -1,1 +1,0 @@
-document.writeln('読み込まれたJavaScriptを実行')

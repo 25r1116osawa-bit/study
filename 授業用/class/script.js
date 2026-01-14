@@ -36,23 +36,6 @@ export default class  HumidifierControler extends BaseClass {
         this.output = output
     }
 
-    // メソッド(関数)
-    // 加湿器の電源を「つける」または「消す」動きをする機能 (切/入ボタンは1つ)
-    // 戻り値：boolean
-    // pushPower (){   
-    //     if(this.powerButton == 0 ){
-    //         this.powerButton = 1
-    //         powerStatus.innerHTML = "オン"
-    //     }else{
-    //         this.powerButton = 0
-    //         powerStatus.innerHTML = "オフ"
-    //     }
-    // }
-    // pushPower 大城が変更
-    // メソッド(関数)
-    // 加湿器の電源を「つける」または「消す」動きをする機能 (切/入ボタンは1つ)
-    // 戻り値：boolean
-
 
     pushPower() {
         // 電源オフの状態の時、powerButton=0 を powerButton=1 へ変更
