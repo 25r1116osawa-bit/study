@@ -1,4 +1,5 @@
 
+
 const onClickAdd = () =>{
     const inputText = document.getElementById("add-text").value
     document.getElementById("add-text").value="";
@@ -19,19 +20,25 @@ const onClickAdd = () =>{
     // 完了 buttonタグ生成
     const completeButton = document.createElement("button")
     completeButton.innerText ="完了"
-
+    completeButton.addEventListener("click",()=>{
+        alert("完了")
+    })
 
 
     // 削除 buttonタグ生成
     const deleteButton = document.createElement("button")
     deleteButton.innerText = "削除"
+    deleteButton.addEventListener("click",()=>{
+        alert("削除")
+    })
+
 
     // dibタグの下にpタグですと指定
     // liタグの下はdivタグですと指定する
     li.appendChild(div);
     div.appendChild(p);
-    p.appendChild(completeButton)
-    p.appendChild(deleteButton)
+    div.appendChild(completeButton)
+    div.appendChild(deleteButton)
     
     // 指定した要素の子どもにここまでで作成したliを差し込む
     // appendChiled(li)は、liの一番下に追加する。

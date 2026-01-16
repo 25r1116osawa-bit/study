@@ -1,0 +1,95 @@
+body {
+  font-family: "Avenir Next";
+}
+
+.header {
+  background-color: #26d0c9;
+  height: auto;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-list ul {
+ display: flex;
+ margin: 0;
+ padding: 0;
+}
+
+.header-list li {
+  list-style: none;
+  padding: 10px 5px 10px 5px;
+  
+}
+
+.header-logo {
+  font-size: 36px;
+  padding: 10px;
+}
+
+.footer {
+  background-color: #2f5167;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo {
+  font-size: 36px;
+}
+
+
+.footer-list li {
+  list-style: none;
+  padding-bottom: 5px;
+}
+
+.footer-list ul {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  padding: auto;
+}
+
+.copy-container h1 {
+  font-size: 70px;
+}
+
+
+/* copy-containerの中のh2のfont-sizeを指定してください */
+.copy-container h2 {
+  font-size: 30px;
+  margin: 0px;
+}
+
+.copy-container span {
+  color: #ff4a4a;
+}
+
+h3{
+  color: #ff4a4a;
+  border-bottom:2px solid #dee7ec;
+  margin: 10px;
+}
+.contents {
+  display: flex;
+  justify-content: center; /* 全体を中央寄せ */
+}
+
+.contents-item{
+  margin-right:40px;
+}
+
+input,textarea{
+   width: 400px;
+  margin-top:10px;
+  margin-bottom:30px;
+  padding:20px;
+  font-size:18px;
+  border:1px solid #dee7ec;
+}

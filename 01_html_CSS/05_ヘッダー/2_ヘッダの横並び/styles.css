@@ -1,0 +1,32 @@
+body {
+  font-family: "Avenir Next";
+}
+
+.header{
+  background-color:#f7f2b4;
+  height:90px;
+}
+
+.main{
+background-color:#bdf7f1;
+  height:600px;
+}
+
+
+.footer{
+background-color:#ceccf3;
+  height:270px;
+}
+
+/*リストを横並びにするため、floatを追加*/
+/*・を消すために、list-style:none;を追加*/
+li {
+  list-style: none;
+  float:left;
+}
+
+/*ロゴを横並びにするため、floatを追加*/
+.header-logo{
+  font-size:36px;
+  float:left;
+}
