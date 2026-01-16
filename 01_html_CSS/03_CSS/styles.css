@@ -1,0 +1,30 @@
+h1{
+    /*文字の色*/
+    color: red;
+    background-color:black
+}
+
+
+ul{
+    color: blue;
+    background-color:black
+}
+
+ol{
+    color: rgb(225, 65, 153);
+    /*文字の大きさ*/
+    font-size:40px;
+    /*文字の種類*/
+    font-family:"Lucida Grande";
+    /*背景色*/
+    background-color:black;
+    /*横幅*/
+    height:200px;
+     /*高さ*/
+    width: 200px;
+}
+
+/*個別に色を変えたい場合は、タグにclassを入れて、.クラス名{}で設定する*/
+.select{
+    color: aqua;
+}

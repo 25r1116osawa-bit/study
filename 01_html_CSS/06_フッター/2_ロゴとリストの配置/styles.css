@@ -1,0 +1,46 @@
+body {
+  font-family: "Avenir Next";
+}
+
+.header{
+  background-color:#f7f2b4;
+  height:90px;
+}
+.header-list li{
+  list-style: none;
+  float: left;
+  padding: 10px 5px 10px 5px;
+}
+
+.main{
+ padding: 100px 80px 100px 80px;
+}
+
+
+
+.header-logo{
+  font-size:36px;
+  float:left;
+  /*上下左右の余白を20px作成*/
+  padding: 10px;
+}
+
+.footer{
+background-color:#ceccf3;
+height:150px;
+}
+
+.fotter-logo{
+  float: left;
+  font-size:32px ;
+}
+
+.footer-list{
+  float: right;
+}
+
+.footer-list li{
+  padding-bottom: 10px;
+  list-style: none;
+  
+}
