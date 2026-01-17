@@ -1,5 +1,7 @@
 
 
+
+
 const namearr = ["田中","山田","大澤"]
 
 // 従来のやり方
@@ -38,6 +40,15 @@ const nameArr3 = namearr.map((name,index) => {
 
 
 
+// mapの応用変
+// 配列の1つめと2つ目には様をつける。
+const newarry = namearr.map((name) =>{
+    if(name==="大澤"){
+        return name;
+     }else{ return name +"様"}
+})
+
+console.log(newarry)
 
 // filter 関数
 const numArr = [1,2,3,4,5];
