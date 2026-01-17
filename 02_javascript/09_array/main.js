@@ -22,25 +22,18 @@ output.innerHTML += arr02[0] + '<br>'
 // 配列への要素の追加
 arr02[3] = '大城'
 output.innerHTML += arr02 + '<br>'
-arr02[arr02.length] = '木村'
-output.innerHTML += arr02 + '<br>'
+
+
 arr02.push('倉田')
 output.innerHTML += arr02 + '<br>'
-// 先頭に要素を追加する。
-arr02.unshift('佐々木')
-output.innerHTML += arr02 + '<br>'
 
-// 削除(取り出す)
-output.innerHTML += arr02.pop() + '<br>'
-output.innerHTML += arr02 + '<br>'
-output.innerHTML += arr02.shift() + '<br>'
-output.innerHTML += arr02 + '<br>'
 
-// 連想配列(オブジェクト)
+
+
 // 連想配列(オブジェクト)の生成方法
 let map01 = {}
 let map02 = {
-    '講師':'木内',
+    '講師':'木内🐕',
     '生徒1':'澤田',
     '生徒2':'下條'
 }
@@ -49,6 +42,7 @@ let map02 = {
 output.innerHTML += map02['講師'] + '<br>'
 output.innerHTML += map02['生徒1'] + '<br>'
 output.innerHTML += map02['生徒2'] + '<br>'
+
 
 // 連想配列の上書き
 map02['講師'] = '木内和也'
