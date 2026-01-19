@@ -5,4 +5,5 @@ const Home = () =>{
     )
 }
 
+// Homeはlayout.tsxのchildrenに渡される。
 export default Home;
