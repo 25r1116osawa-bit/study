@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "./compornent/header";
 import Footer from "./compornent/footer";
-
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
