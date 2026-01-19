@@ -1,4 +1,5 @@
-import {Hook4} form "" 
+import {Hook4} from "@/"
+
 // import Link from "next/link";
 const dog = () => {
 
