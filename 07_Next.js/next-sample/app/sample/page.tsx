@@ -1,9 +1,7 @@
-const Home = () =>{
+import { NextPage } from "next";
 
-    return (
-        <div style={{color:"Red"}}>おはようございます</div>
-    )
-}
+const Home: NextPage = () => {
+  return <div style={{ color: "red" }}>おはようございます</div>;
+};
 
-// Homeはlayout.tsxのchildrenに渡される。
 export default Home;
