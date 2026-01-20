@@ -1,4 +1,5 @@
-import Text from "@/app/component/Text"
+'use client'
+import Text from "@/app/compornent/Text"
 import { useSearchParams } from "next/navigation";
 
 

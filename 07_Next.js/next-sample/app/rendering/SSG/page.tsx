@@ -1,5 +1,6 @@
-//SSG（Static Site Generation）
-//静的サイト生成
+// SSG（Static Site Generation）
+// ビルド時にHTMLを生成する静的ページ
+
 // いつ？ビルド時（npm run build）
 // サーバー（ビルド時）
 // HTML を 事前に作って保存 表示が 最速 SEO に最強 データ更新が少ないページ向き

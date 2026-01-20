@@ -1,5 +1,7 @@
 "use client"
 
+// ダイナミックルーティングを利用して、　各犬種の画像を取得できるページを作成してください
+
 import { useEffect, useState } from "react";
 import Image from "next/image"; // <- Next.js推奨
 
@@ -29,6 +31,7 @@ const GetDogImgs = () => {
 
   return (
     <div>
+      <div>
       {dogImage !== "" ? (
         <Image
           src={dogImage}
@@ -40,6 +43,11 @@ const GetDogImgs = () => {
         <p>通信失敗または読み込み中...</p>
       )}
     </div>
+    <div>
+
+
+    </div>
+  </div>
   );
 };
 

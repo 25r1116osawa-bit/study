@@ -1,5 +1,6 @@
 import GetDogImgs from '../compornent/dogcompornet'
 
+
 const Home = () =>{
 
     return (
@@ -11,3 +12,4 @@ const Home = () =>{
 
 // Homeはlayout.tsxのchildrenに渡される。
 export default Home;
+
