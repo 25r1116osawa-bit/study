@@ -1,4 +1,4 @@
-import GetDogImgs from '../compornent/dogcompornet'
+import GetDogImgs from '../compornents/dogcompornet'
 
 
 const Home = () =>{
