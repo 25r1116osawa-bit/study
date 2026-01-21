@@ -26,6 +26,7 @@ const Home = () => {
            <li> <Link href="HTML">HTML TEST</Link></li>
             </ul>
             <ul>
+
                 <li><Link href="rendering/SSG">SSG</Link></li>
                 <li><Link href="rendering/SSR">SSR</Link></li>
                 <li><Link href="rendering/CSR">CSR</Link></li>
