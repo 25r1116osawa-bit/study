@@ -63,3 +63,158 @@ header {
   box-sizing: border-box;
   text-align: center;
 }
+
+/* ===============================
+   全体
+================================ */
+
+
+.container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+}
+
+/* ===============================
+   サイドバー
+================================ */
+.sidebar {
+  background: rgba(20, 30, 48, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-header {
+  padding: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #243b55, #141e30);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #d0eaff;
+  text-shadow: 0 0 6px #66b1ff;
+}
+
+.sidebar-body {
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* 親項目 */
+ul.parent {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+ul.parent > li {
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #bcd9ff;
+  transition: 0.2s;
+}
+
+ul.parent > li:hover {
+  color: #ffffff;
+  text-shadow: 0 0 5px #4db5ff;
+}
+
+/* 子項目 */
+ul.child {
+  list-style: none;
+  padding-left: 15px;
+  display: none;
+  margin-top: 5px;
+}
+
+ul.child.open {
+  display: block;
+}
+
+ul.child li {
+  padding: 7px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #d7ebff;
+  border-left: 2px solid transparent;
+  transition: 0.25s;
+}
+
+ul.child li:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 2px solid #4ab3ff;
+}
+
+ul.child li.active {
+  background: rgba(88, 175, 255, 0.18);
+  border-left: 2px solid #8bd3ff;
+}
+
+/* ===============================
+   コンテンツ
+================================ */
+.content {
+  background: rgba(255, 255, 255, 0.1);
+  margin: 18px;
+  padding: 25px;
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 20px rgba(0, 140, 255, 0.2);
+  overflow-y: auto;
+}
+
+/* ===============================
+   Markdown
+================================ */
+.markdown-body h1, 
+.markdown-body h2, 
+.markdown-body h3 {
+  color: #b7dcff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 6px;
+  text-shadow: 0 0 6px #5eb4ff;
+}
+
+.markdown-body p {
+  line-height: 1.8;
+  color: #e9f4ff;
+}
+
+.markdown-body pre {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.markdown-body code {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 6px;
+  border-radius: 3px;
+}
+
+/* 表 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  color: #dbe9ff;
+}
+
+table th {
+  background: rgba(120, 170, 255, 0.25);
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+table td {
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+}

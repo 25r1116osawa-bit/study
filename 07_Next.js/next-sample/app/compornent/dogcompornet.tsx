@@ -1,53 +1,64 @@
-"use client"
-
-// ダイナミックルーティングを利用して、　各犬種の画像を取得できるページを作成してください
-
+"use client";
 import { useEffect, useState } from "react";
-import Image from "next/image"; // <- Next.js推奨
 
-const endpoint = "https://dog.ceo/api/breeds/image/random";
-
-interface DogAPIResponse {
-  message: string;
-  status: string;
-}
-
-const fetchDogImage = async (): Promise<DogAPIResponse> => {
-  try {
-    const res = await fetch(endpoint);
-    const data = (await res.json()) as DogAPIResponse;
-    return data;
-  } catch {
-    return { message: "", status: "error" }; // err を省略
-  }
-};
 
 const GetDogImgs = () => {
-  const [dogImage, setDogImage] = useState<string>("");
 
+  // selectbox用
+  const [breed, setBreed] = useState("affenpinscher");
+
+  // URLが変更した際のstateを管理
+  const [imageUrl, setImageUrl] = useState("");
+
+  // selectbox用の配列
+  const dogBreeds = ["affenpinscher", "airedale"];
+
+  // selectboxが発火した際に、valueを取得する
+  const changeSelectBox = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setBreed(e.target.value);
+  };
+
+  // promisを受け取る関数
+  const fetchDogData = async () => {
+    // 画像入りの封筒が届いたイメージ await fetchで通信が完了するまで待機
+    const response = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+
+    // bodyの中身をjsonとして解析が終わるまで、待機
+    const data = await response.json();
+    // 解析が終わると{ message: "url...", status: "success" }というオブジェクトが入る。
+    return data;
+  }
+  // fetchDogDataの中身:
+  // {
+  //   message: "https://images.dog.ceo/breeds/pekinese/n02086079_5522.jpg",
+  //   status: "success"
+  // }
+
+  // 初回表示時（初期値""） と breed が変更されたときに発火
   useEffect(() => {
-    fetchDogImage().then((data) => setDogImage(data.message));
-  }, []);
+    const load = async () => {
+      const dog = await fetchDogData();
+      setImageUrl(dog.message);
+    };
+    load();
+  }, [breed]);
+
 
   return (
-    <div>
+    <>
       <div>
-      {dogImage !== "" ? (
-        <Image
-          src={dogImage}
-          alt="Random Dog"
-          width={400}   // 必須: 横幅
-          height={400}  // 必須: 高さ
-        />
-      ) : (
-        <p>通信失敗または読み込み中...</p>
-      )}
-    </div>
-    <div>
-
-
-    </div>
-  </div>
+        <select onChange={changeSelectBox}>
+          <option value="affenpinscher">{dogBreeds[0]}</option>
+          <option value="airedale">{dogBreeds[1]}</option>
+        </select>
+        {/* imageUrl True or Falseで三項演算子*/}
+        {imageUrl ? (
+          <img src={imageUrl} alt="dog" width={300} />
+        ) : (
+          <p>読み込み中...</p>
+        )}
+      </div>
+    </>
   );
 };
 

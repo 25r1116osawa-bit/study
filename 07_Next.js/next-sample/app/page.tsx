@@ -18,12 +18,15 @@ const Home = () => {
         <>
             <h1>TOPページです！</h1>
             <ul>
-           <li> <Link href="sample">サンプル1</Link></li>
-           <li> <Link href="sample2">サンプル2</Link></li>
-           <li> <Link href="dog">犬</Link></li>
-           <li> <Link href="HTML">HTML TEST</Link></li>
+                <li> <Link href="sample">サンプル1</Link></li>
+                <li> <Link href="sample2">サンプル2</Link></li>
+                <li> <Link href="dog">犬</Link></li>
+                <li> <Link href="HTML">HTML TEST</Link></li>
+                <li><Link href="/user/1">ユーザー1へ</Link></li>
+                <li><Link href="/user/2">ユーザー2へ</Link></li>
             </ul>
             <ul>
+
                 <li><Link href="rendering/SSG">SSG</Link></li>
                 <li><Link href="rendering/SSR">SSR</Link></li>
                 <li><Link href="rendering/CSR">CSR</Link></li>
