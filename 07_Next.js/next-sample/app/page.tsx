@@ -16,7 +16,7 @@ const Home = () => {
 
     return (
         <>
-        <//><//>
+     
             <h1>TOPページです！</h1>
             <ul>
             
