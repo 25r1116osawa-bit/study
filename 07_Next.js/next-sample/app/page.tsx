@@ -16,8 +16,10 @@ const Home = () => {
 
     return (
         <>
+        <//><//>
             <h1>TOPページです！</h1>
             <ul>
+            
            <li> <Link href="sample">サンプル1</Link></li>
            <li> <Link href="sample2">サンプル2</Link></li>
            <li> <Link href="dog">犬</Link></li>
