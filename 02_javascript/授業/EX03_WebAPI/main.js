@@ -14,10 +14,3 @@ function capture(){
             output.alt = '画像取得完了'
         })
 }
-
-/*
-関数(なにかをしてくれる箱)	function capture() { ... }
-変数	output, response, json
-オブジェクト	output, response, json, console
-メソッド(特定の人（もの）が持っている道具)	fetch(), .then(), response.json(), console.log()
-*/
