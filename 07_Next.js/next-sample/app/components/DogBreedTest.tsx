@@ -1,4 +1,5 @@
 "use client"
+import { readFileSync } from "fs"
 import { useState } from "react"
 
 
@@ -43,3 +44,22 @@ import { useState } from "react"
 // selectboxは表示のため、子
 // selectboxの状態と通知は親
 
+// Step2 Stateを決める親を作る
+
+// Step3 子に渡す props（関数）を決める
+
+// Step4 子コンポーネントを書く
+
+
+export default function Page() {
+
+
+    return (
+    <div>
+        <select name="" id="">
+            <option value="">a</option>
+            <option value="">b</option>
+        </select>
+    </div>
+  )
+}
