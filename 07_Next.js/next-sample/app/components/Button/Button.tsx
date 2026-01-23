@@ -5,7 +5,7 @@ import './button.css';
 // Storybook Docs 用の説明コメントを含んでいる。
 
 export interface ButtonProps {
-  /** ああああ TESIs this the principal call to action on the page? */
+  /**  TESIs this the principal call to action on the page? */
   primary?: boolean;
   /** What background color to use */
   backgroundColor?: string;
@@ -26,6 +26,8 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+ 
+ 
   return (
     <button
       type="button"

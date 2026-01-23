@@ -47,11 +47,11 @@ export const Primary: Story = {
 };
 
 // 変数名 = ストーリー名
-export const Secondaryaaa: Story = {
+export const secondary: Story = {
   args: {
     label: 'Button',
     // 追加してみた
-    backgroundColor: '#ff0000'
+    backgroundColor: "#000000"
   },
 };
 
@@ -65,6 +65,13 @@ export const Large: Story = {
 export const Small: Story = {
   args: {
     size: 'small',
+    label: 'Button',
+  },
+};
+
+export const medium: Story = {
+  args: {
+    size: 'medium',
     label: 'Button',
   },
 };
