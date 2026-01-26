@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 //import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Hello from './components/01Hello';
 import Props from './components/02Props';
 import Props2 from './components/03Props2';
 import Context1 from './components/04Context';
@@ -18,6 +17,7 @@ import Hook4 from './components/09Hook4useEffect'
 import Record from './components/10Hook5useEffect2'
 import Hook5 from './components/11Hook6CustomHook'
 import  Counter03  from './components/P05useCounterHook';
+import ParentCounter from './components/button/ParentCounter';
 
 
 const root = ReactDOM.createRoot(
@@ -25,7 +25,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Hello />
+    <ParentCounter/>
     <Props text='あいうえお' />
     <Props2 text='かきくけこ'/>
     <Context1 />
