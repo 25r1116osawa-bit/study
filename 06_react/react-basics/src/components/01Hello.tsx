@@ -1,22 +1,23 @@
-// クロージャー（関数の中に入る関数）
-// Reactでは頻繁に登場する。
-// returnがコンポーネントとして返る
-// onClick={onClick}の{}の内側は上の関数を呼び出している。
-// reactの書き方は2種類あり、下記の書き方は関数コンポーネントと呼ぶ。
-// もう一つは、クラスコンポーネント
 
-const Hello = () => {
-    const onClick = () =>{
-        alert("Hello World")
-    }
-    const text = 'はろー'
-    
-    return (
-        <div onClick={onClick}>
-            {text}
-        </div>
-    )
-}
-export default Hello
+import { useState } from "react";
 
+const ParentCounter = () => {
+  const [count, setCount] = useState(0);
 
+  return (
+    <div>
+      <CounterDisplay count={count} />
+      <CounterButton onIncrement={() => setCount(count + 1)} />
+    </div>
+  );
+};
+
+const CounterDisplay = ({ count }: { count: number }) => {
+  return <p>現在の数：{count}</p>;
+};
+
+const CounterButton = ({ onIncrement }: { onIncrement: () => void }) => {
+  return <button onClick={onIncrement}>＋1</button>;
+};
+
+export default ParentCounter

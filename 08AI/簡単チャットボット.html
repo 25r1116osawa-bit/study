@@ -89,8 +89,10 @@ APIKeyとモデルのバージョンは定数で指定できるようにして�
         try {
             // APIエンドポイントの構築
             const endpoint = `https://generativelanguage.googleapis.com/${API_VERSION}/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
-
+            console.log(endpoint)
             const response = await fetch(endpoint, {
+               
+                
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
