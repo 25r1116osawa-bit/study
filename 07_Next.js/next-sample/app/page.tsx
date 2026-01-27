@@ -4,59 +4,73 @@ import Image from "next/image";
 
 const Home = () => {
 
-    const article = [
-        { src: "/HTML.jpg", title: "HTML学習内容", alt: "HTMLのロゴ画像" },
-        { src: "/CSS.jpg", title: "CSS学習内容", alt: "CSSのロゴ画像" },
-        { src: "/JS.jpg", title: "JS学習内容", alt: "JSのロゴ画像" },
-        { src: "/GitHub.jpg", title: "GitHub学習内容", alt: "GitHubのロゴ画像" },
-        { src: "/React.jpg", title: "React学習内容", alt: "Reactのロゴ画像" },
-        { src: "/Python.jpg", title: "Python学習内容", alt: "Pythonのロゴ画像" }
-    ]
+    
 
 
     return (
-        <>
      
-            <h1>TOPページです！</h1>
-            <ul>
-            
-           <li> <Link href="sample">サンプル1</Link></li>
-           <li> <Link href="sample2">サンプル2</Link></li>
-           <li> <Link href="dog">犬</Link></li>
-           <li> <Link href="HTML">HTML TEST</Link></li>
+     <div className="container">
+
+    <aside className="sidebar">
+      <div className="sidebar-header">📘 Learn Panel</div>
+
+      <div className="sidebar-body">
+        <ul className="parent">
+          <li>
+            HTML
+            <ul className="child">
+              <li data-file="ショートカットキー.md">ショートカットキー</li>
+              <li data-file="基本タグ.md">基本タグ</li>
+              <li data-file="グローバルナビ.md">グローバルナビ</li>
+              <li data-file="グループ分け.md">グループ分け</li>
+              <li data-file="フォーム.md">フォーム</li>
             </ul>
-            <ul>
+          </li>
+        </ul>
 
-                <li><Link href="rendering/SSG">SSG</Link></li>
-                <li><Link href="rendering/SSR">SSR</Link></li>
-                <li><Link href="rendering/CSR">CSR</Link></li>
-                <li><Link href="rendering">レンダリング確認ページ</Link></li>
-                <li><Link href="transition">画面遷移データ受けわたし。確認ページ</Link></li>
-
+        <ul className="parent">
+          <li>
+            CSS
+            <ul className="child">
+              <li data-file="フォント.md">フォント</li>
+              <li data-file="CSSを適用する方法.md">CSSを適用する方法</li>
+              <li data-file="CSSの基本の書き方.md">基本の書き方</li>
+              <li data-file="CSSフレームワーク.md">フレームワーク</li>
             </ul>
+          </li>
+        </ul>
 
-            <div id="pickup" className="wrapper">
+        <ul className="parent">
+          <li>
+            VSCode
+            <ul className="child">
+              <li data-file="live share.md">Live Share</li>
+              <li data-file="ブランチ.md">ブランチ</li>
+            </ul>
+          </li>
+        </ul>
 
-                {article.map((article, index) => (
-
-                    <article key={index}>
-                        <Image
-                            src={article.src}
-                            alt={article.alt}
-                            width={150}
-                            height={150}
-                            className="article-image"
-                        />
-                        <h2 className="article-title">{article.title}</h2>
-                        <div className="readmore"><a href="">READ MORE</a></div>
-                    </article>
-
-                ))}
+        <ul className="parent">
+          <li>
+            javascript
+            <ul className="child">
+              <li data-file="javascript基礎.md">基礎</li>
+              <li data-file="Domの構造.md">Domの構造</li>
+            </ul>
+          </li>
+        </ul>
 
 
-            </div>
+      </div>
+    </aside>
 
-        </>
+ 
+    <main className="content markdown-body" id="content-area">
+      左の項目をクリックすると説明が表示されます。
+    </main>
+
+  </div>
+      
     )
 }
 // Homeはlayout.tsxのchildrenに渡される。
