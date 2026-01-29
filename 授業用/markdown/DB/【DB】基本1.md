@@ -1,0 +1,61 @@
+tr=行
+th=見出し
+td=データ
+
+# データベース（MariaDB）基礎操作の流れ
+
+1. データベースに接続する  
+mariadb -u root -p
+
+2. データベースを確認する  
+SHOW DATABASES;   
+
+3. 使用するデータベースを指定する  
+   USE training_db;
+
+4. テーブル(表)一覧を表示  
+SHOW TABLES;
+
+5. テーブルの構造確認コマンド  
+DESCRIBE departments;
+
+6. 従業員データの出力例  
+SELECT * FROM employees;
+
+7. 従業員テーブルの全データを下さい  
+   SELECT emp_name, salary FROM employees;
+
+応用
+- 名前に木が含まれているデータを検索  
+SELECT * FROM employees WHERE emp_name LIKE '%木%';
+
+- 給料が300000以上のデータを抽出
+ SELECT * FROM employees WHERE salary >= 300000;
+
+- 誰がどの部署に所属しているかを確認  
+SELECT e.emp_name,d.dept_name FROM employees AS e INNER JOIN departments AS d ON e.dept_id = d.dept_id;
+
+--- 
+
+<table style="border: 1px solid #FFF;">
+    <tr>
+        <th>DDL (データ定義言語)</th>
+        <th>DML (データ操作言語)</th>
+        <th>DCL (データ制御言語)</th>
+    </tr>
+    <tr>
+        <td>テーブル等の箱を作成/定義 (CREATE, DROP, ALTER)</td>
+        <td>データを操作 (SELECT, INSERT, UPDATE, DELETE)</td>
+        <td>権限や制御を行う (GRANT, REVOKE, COMMIT)</td>
+    </tr>
+</table>
+
+特に覚えたいところは、DMLとDLCの操作
+
+1. データベースを作成
+2. テーブルを定義
+3. データを挿入
+4. データを取得
+5. データを更新
+6. データを削除
+
