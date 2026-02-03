@@ -10,9 +10,6 @@
 -- CREATE(データ作成)
 INSERT INTO employee VALUES (1,'大澤',1,'1988/6/4');
 
-INSERT INTO employee VALUES (3,'大澤 樹',1,'1988/6/4');
-
-
 
 -- INSERT INTO テーブル名 (列1, 列2, 列3, ...) VALUES (値1, 值2, 值3, ...);
 INSERT INTO employee VALUES (1,'大澤沙織',2,'1988/10/21'),(2,'大澤 樹',1,'1988/6/4'),(3,'木内和也',1,'1988/6/13'),(4,'テスト',1,'1988/6/13');
