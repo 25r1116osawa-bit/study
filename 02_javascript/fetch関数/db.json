@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "id": "2",
+      "title": "fetch理解",
+      "completed": false
+    },
+    {
+      "id": "f260",
+      "title": "新しいTodo",
+      "completed": false
+    },
+    {
+      "id": "f36a",
+      "title": "新しいTodo",
+      "completed": false
+    },
+    {
+      "id": "26a8",
+      "title": "新しいTodo",
+      "completed": true
+    },
+    {
+      "id": "e2f9",
+      "title": "テスト",
+      "completed": true
+    }
+  ]
+}

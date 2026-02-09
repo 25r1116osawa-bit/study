@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>JSだけECサイト</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+    }
+
+    .container {
+      width: 900px;
+      margin: 30px auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      width: 50%;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .total {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 商品検索・一覧 -->
+  <div class="box">
+    <h2>商品検索</h2>
+    <input type="text" id="searchInput" placeholder="商品名を入力">
+    <button id="button" type="button">送信</button>
+    <div id="productList"></div>
+  </div>
+
+  <!-- カート -->
+  <div class="box">
+    <h2>カート</h2>
+    <div id="cartList"></div>
+
+    <div class="total">
+      合計金額：<span id="totalPrice">0</span>円
+    </div>
+  </div>
+
+</div>
+<script src="./script.js"></script>
+
+</body>
+</html>
