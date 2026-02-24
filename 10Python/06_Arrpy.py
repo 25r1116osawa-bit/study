@@ -47,3 +47,33 @@ print(arr03)
 # 引数にインデックスを指定することができる。
 print(arr03.pop())
 print(arr03)
+
+# 検索結果に何件当たりましたなどでよく使う。
+print(len(arr03))
+
+# ソート
+arr03.sort()
+print(arr03)
+
+# 要素の全削除
+arr03.clear()
+print(arr03)
+
+
+# 拡張for文
+arr04 = ["A","B","C","D","E"]
+for element in arr04:
+    print(element)
+else:
+    print("出力完了")
+
+
+# おまけ
+print("おまけ")
+while True:
+    if len(arr04) == 0:
+        break
+    elif len(arr04) == 1:
+        print(arr04.pop(0))
+    else:
+        print(arr04.pop(0),end=",")
