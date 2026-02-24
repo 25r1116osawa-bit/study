@@ -16,9 +16,11 @@ print(int01 * int02)
 # 除算
 print(int01 / int02)
 print(type(int01 / int02))
+
 # 除算(小数点以下切り捨て)
 print(int01 // int02)
 print(type(int01 // int02))
+print("a")
 # 剰余算
 print(int01 % int02)
 # 冪乗
