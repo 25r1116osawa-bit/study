@@ -1,56 +1,59 @@
-import tkinter as tk
+import tkinter
 
-root = tk.Tk()
+root = tkinter.Tk()
 root.title("簡易電卓")
-root.geometry("500x200")
 
-# ===== 入力欄 =====
-label1 = tk.Label(root, text="値1：")
-label1.grid(row=0, column=0)
 
-input1 = tk.Entry(root)
-input1.grid(row=0, column=1)
+lb01 = tkinter.Label(text="値１：")
+lb02 = tkinter.Label(text="値２：")
+lbAns = tkinter.Label(text="答え")
 
-label2 = tk.Label(root, text="値2：")
-label2.grid(row=1, column=0)
+# 入力フォームの設定
+input01 = tkinter.Entry()
+input02 = tkinter.Entry()
 
-input2 = tk.Entry(root)
-input2.grid(row=1, column=1)
-
-# ===== 計算関数 =====
+# ボタンアクション
 def add():
-    value1 = int(input1.get())
-    value2 = int(input2.get())
-    result_label.config(text=f"結果：{value1 + value2}")
+    num01 = int(input01.get())
+    num02 = int(input02.get())
+    lbAns.configure(text = num01+num02)
 
-def minus():
-    value1 = int(input1.get())
-    value2 = int(input2.get())
-    result_label.config(text=f"結果：{value1 - value2}")
+def sub():
+    num01 = int(input01.get())
+    num02 = int(input02.get())
+    lbAns.configure(text=num01-num02)
 
-def multiplier():
-    value1 = int(input1.get())
-    value2 = int(input2.get())
-    result_label.config(text=f"結果：{value1 * value2}")
+def mul():
+    num01 = int(input01.get())
+    num02 = int(input02.get())
+    lbAns.configure(text=num01*num02)
 
-def quotient():
-    value1 = int(input1.get())
-    value2 = int(input2.get())
-    result_label.config(text=f"結果：{value1 / value2}")    
+def dib():
+    num01 = int(input01.get())
+    num02 = int(input02.get())
+    lbAns.configure(text = num01/num02)
 
-# ===== ボタンエリア =====
-button_frame = tk.Frame(root)
-button_frame.grid(row=2, column=0, columnspan=2)
+# ボタンの設定
+butAdd = tkinter.Button(text="加算", command = add)
+butSub = tkinter.Button(text="減算", command = sub)
+butMul = tkinter.Button(text="乗算", command = mul)
+butDiv = tkinter.Button(text="除算", command = dib)
 
-tk.Button(button_frame, text="加算", command=add).grid(row=0, column=0)
-tk.Button(button_frame, text="減算", command=minus).grid(row=0, column=1)
-tk.Button(button_frame, text="乗算", command=multiplier).grid(row=0, column=2)
-tk.Button(button_frame, text="除算", command=quotient).grid(row=0, column=3)
 
-# ===== 結果表示 =====
-result_label = tk.Label(root, text="結果：")
-result_label.grid(row=3, column=0, columnspan=2)
 
+# デザイン設定
+lb01.pack()
+input01.pack()
+lb02.pack()
+input02.pack()
+butAdd.pack()
+butSub.pack()
+butMul.pack()
+butDiv.pack()
+lbAns.pack()
+
+
+# メイン実行
 root.mainloop()
 
 
