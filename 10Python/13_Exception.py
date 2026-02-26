@@ -45,4 +45,5 @@ except Exception as ex:
     print(ex)
 finally:
     print("エラーが発生してもしなくても実行します。")
+
 print("プログラムが終了しました。")

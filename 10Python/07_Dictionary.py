@@ -38,3 +38,4 @@ print("aaaa" in dic02)
 
 # Keyが存在しないときのエラー対策2
 print(dic02.get("bbbbbbbbb")) # keyが存在しない場合Noneになる。
+print(dic02.get("aaaa"))

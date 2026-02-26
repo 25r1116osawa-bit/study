@@ -1,14 +1,17 @@
+# =============
+# クロージャー
+# =============
 def func():
     def closure():
-        print("クロージャです。")
+        print("クロージャーです。")
     closure()
 
 func()
 
-
+# クロージャを返す関数
 def func2():
     def closure():
-        print("クロージャ2です。")
+        print("クロージャー2です。")
     return closure
 
 closure01 = func2()

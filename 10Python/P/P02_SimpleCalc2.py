@@ -1,7 +1,16 @@
 import tkinter
 
+# インスタンス化
 root = tkinter.Tk()
+
+# ルートウィンドウの設定
+# ルートウィンドウのタイトル
 root.title("簡易電卓")
+
+# ルートウィンドウのサイズ
+# なければオートレイアウト
+# root.geometry("200x210")
+
 # デザインを整えるため、ウィジェットをまとめるウィジェット
 # フレームの宣言
 frame01 = tkinter.Frame(root)
@@ -18,35 +27,36 @@ lbAns = tkinter.Label(frame04,text="答え")
 input01 = tkinter.Entry(frame01)
 input02 = tkinter.Entry(frame02)
 
-
 # ボタンアクション
 def add():
+    # 加算関数
     num01 = int(input01.get())
     num02 = int(input02.get())
-    lbAns.configure(text = num01+num02)
+    lbAns.configure(text=num01 + num02)
 
 def sub():
+    # 減算関数
     num01 = int(input01.get())
     num02 = int(input02.get())
-    lbAns.configure(text=num01-num02)
+    lbAns.configure(text=num01 - num02)
 
 def mul():
+    # 乗算関数
     num01 = int(input01.get())
     num02 = int(input02.get())
-    lbAns.configure(text=num01*num02)
+    lbAns.configure(text=num01 * num02)
 
-def dib():
+def div():
+    # 除算関数
     num01 = int(input01.get())
     num02 = int(input02.get())
-    lbAns.configure(text = num01/num02)
+    lbAns.configure(text=num01 / num02)
 
 # ボタンの設定
-butAdd = tkinter.Button(frame03,text="加算", command = add)
-butSub = tkinter.Button(frame03,text="減算", command = sub)
-butMul = tkinter.Button(frame03,text="乗算", command = mul)
-butDiv = tkinter.Button(frame03,text="除算", command = dib)
-
-
+butAdd = tkinter.Button(frame03,text="加算", command=add)
+butSub = tkinter.Button(frame03,text="減算", command=sub)
+butMul = tkinter.Button(frame03,text="乗算", command=mul)
+butDiv = tkinter.Button(frame03,text="除算", command=div)
 
 # デザイン設定
 frame01.pack()
@@ -64,9 +74,5 @@ butMul.pack(side=tkinter.LEFT)
 butDiv.pack(side=tkinter.LEFT)
 lbAns.pack(side=tkinter.LEFT)
 
-
-
 # メイン実行
 root.mainloop()
-
-
