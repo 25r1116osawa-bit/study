@@ -10,7 +10,7 @@ def add(db:DM.DatabaseManager):
     name = input()
     gender = numberInputRange("性別を入力して下さい。\n[1]男[2]女[3]その他",1,3)
     age = numberInputRange("年齢を入力して下さい。",0,120)
-    p = Person(name,gender,age)
+    p = Person(name=name,gender=gender,age=age)
     print("ID,氏名,性別,年齢")
     print(p)
     if confirm("本当に登録してもよろしいでしょうか？"):

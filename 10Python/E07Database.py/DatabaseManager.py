@@ -1,6 +1,5 @@
 # =============
 # データベースマネージャー(自作のライブラリ)
-# MVCモデルにのって作成
 # =============
 import sqlite3
 from Person import Person
