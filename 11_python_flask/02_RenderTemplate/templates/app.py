@@ -9,3 +9,6 @@ def hello_world():
     message="これはJinjaテンプレートの利用例です。"
     )
 
+if __name__ == "__main__":
+    app.debug = True
+    
