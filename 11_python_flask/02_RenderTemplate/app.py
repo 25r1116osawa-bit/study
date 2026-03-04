@@ -1,15 +1,3 @@
-from flask import Flask, render_template
-app = Flask(__name__)
-
-@app.route("/")
-def hello_world():
-    
-    return render_template(
-        "index.html",
-        title="Index with Jinja",
-        message="これはJinjaテンプレートの利用例です。"
-        )
-
-if __name__ == "__main__":
-    app.debug = True
-    app.run(host="localhost",port=8180)
+from jinja2 import Template
+template = Template(“<p>こんにちは、{{ name }}さん！</p>”)
+result = template.render(name=”田中”)

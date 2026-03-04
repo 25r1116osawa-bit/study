@@ -34,32 +34,32 @@
         <p>Post送信</p>
         <form action="{{ url_for('calc' ) }}" method="post">
             <label for="num1">num1
-                <input type="number" name="num1" id="num1" >
+                <input type="number" name="num1" id="num1">
             </label>
             <label for="num2">num2
                 <input type="number" name="num2" id="num2">
             </label>
             <label for="p">
-                <input type="radio" name="op" id="p" value="p">加算
+                <input type="radio" name="op" id="p">加算
             </label>
             <label for="m">
-            <input type="radio" name="op" id="m" value="m">減算
+            <input type="radio" name="op" id="m">減算
             </label>
             <label for="mm">
-            <input type="radio" name="op" id="mm" value="mm">乗算
+            <input type="radio" name="op" id="mm">乗算
             </label>
             <label for="d">
-                <input type="radio" name="op" id="d" value="d">除算
+                <input type="radio" name="op" id="d">除算
             </label>
             <input type="submit" value="送信">
         </form>
     </div>
     <p>/calc/num1/num2/opでアクセスして下さい。</p>
     <p>opは加算=p,減算=m,乗算=mm,除算=d</p>
-    <a href="{{ url_for('calc',num1=5,num2=2,op='p' ) }}">5+2</a>
-    <a href="{{ url_for('calc',num1=5,num2=2,op='m' ) }}">5-2</a>
-    <a href="{{ url_for('calc',num1=5,num2=2,op='mm' ) }}">5*2</a>
-    <a href="{{ url_for('calc',num1=5,num2=2,op='d' ) }}">5/2</a>
+    <a href="{{ url_for('calcd',num1=5,num2=2,op='p' ) }}">5+2</a>
+    <a href="{{ url_for('calcd',num1=5,num2=2,op='m' ) }}">5-2</a>
+    <a href="{{ url_for('calcd',num1=5,num2=2,op='mm' ) }}">5*2</a>
+    <a href="{{ url_for('calcd',num1=5,num2=2,op='d' ) }}">5/2</a>
     <div>答え：{{message}}</div>
 </body>
 </html>

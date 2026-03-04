@@ -10,16 +10,18 @@ def index():
         )
 
 # ダイナミックルーティング
-@app.route("/calc/<int:num1>/<int:num2>/<op>")
-def index2(num1,num2,op):
+@app.route("/calc/<num1>/<num2>/<op>")
+def calcd(num1,num2,op):
+    int_num1 = int(num1)
+    int_num2 = int(num2)
     if op == "p":
-        ans = num1 + num2
+        ans = int_num1 + int_num2
     elif op == "m":
-        ans = num1 - num2
+        ans = int_num1 - int_num2
     elif op == "mm":
-        ans = num1 * num2
+        ans = int_num1 * int_num2
     elif op == "d":
-        ans = num1 /  num2
+        ans = int_num1 /  int_num2
     else:
         abort(404)
     return render_template(
@@ -30,18 +32,18 @@ def index2(num1,num2,op):
 
 @app.route("/calc",methods=["GET","POST"])
 def calc():
-
     methodName = request.method
     try:
         if methodName == "GET":
             num1 = int(request.args.get("num1"))
             num2 = int(request.args.get("num2"))
+            op = request.args.get("op")
         elif methodName == "POST":
             num1 = int(request.form.get("num1"))
             num2 = int(request.form.get("num2"))
+            op = request.form.get("op")
         else:
             abort(404)
-        op = request.values.get("op")
         if op == "p":
             ans = num1 + num2
         elif op == "m":
@@ -63,4 +65,4 @@ def calc():
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host="0.0.0.0",port=6040)
+    app.run(host="0.0.0.0",port=8080)
