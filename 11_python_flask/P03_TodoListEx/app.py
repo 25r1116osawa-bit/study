@@ -32,8 +32,8 @@ def add():
     return redirect(url_for('index'))
 
 
-@app.route('/delte')
-def delte():
+@app.route('/delete')
+def delete():
     pass
 
 @app.route('/edit')
