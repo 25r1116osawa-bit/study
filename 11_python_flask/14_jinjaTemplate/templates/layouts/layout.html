@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}{% endblock %}
+    <title>{{title}} - {{subtitle}}</title>
+</head>
+<body>
+<header>
+    {% block header %}{% endblock %}
+</header>
+<main>
+    {% block main %}{% endblock %}
+</main>
+<footer>
+    {%  include "blocks/list.html" %}
+    {% block footer %}{% endblock %}
+</footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メンバリスト - {{title}}</title>
+</head>
+<body>
+    <h1>メンバリスト - {{title}}</h1>
+    <table>
+        <tr>
+            {% for column in columnList %}
+                <th>{{column}}</th>
+            {% endfor %}
+        </tr>
+
+        {% for data in listData  %}
+        <tr>
+            <td>{{data.id}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>
+                {% if data.gender == 1 %}
+                    男
+                {% elif data.gender ==2 %}
+                    女
+                {% else %}
+                    その他
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Application</title>
+</head>
+<body>
+    <div>
+    <h1>Todo Application</h1>
+    <form action="{{url_for('add')}}" method="POST">
+        <input type="text" name="todo" id="todo" placeholder="input todo!">
+        <input type="submit" value="add">
+    </form>
+    </div>
+    <div>
+    {% for d in data %}
+        <p>{{d.id}}:{{d.todo}}</p>
+        <a href="/del_todo/{{d.id}}">[ delete ]</a>
+    {% endfor %}
+    </div>
+
+</body>
+</html>
