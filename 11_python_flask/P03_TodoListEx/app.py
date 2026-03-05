@@ -12,8 +12,35 @@ db.init_app(app)
 
 @app.route("/")
 def index():
+    titles = ["タイトル1","タイトル2","タイトル3","タイトル4"]
+    post = [
+        {
+            "title":"呪術回線",
+            "body":"おもしろい",
+            "crieated":"2026/3/5"
+        },{
+            "title":"ワンピース",
+            "body":"おもしろい",
+            "crieated":"2026/3/5"
+        },{
+            "title":"ハンターハンター",
+            "body":"おもしろい",
+            "crieated":"2026/3/5"
+        },{
+            "title":"ポケモン",
+            "body":"おもしろい",
+            "crieated":"2026/3/5"
+        }
+    ]
+
     data = Todo.query.all()
-    return render_template('index.html',data=data)
+    return render_template('index.html',
+                           var1="タイトル1",
+                           var2="タイトル2",
+                           data=data,
+                           titles=titles,
+                           post=post)
+                           
 
 
 
