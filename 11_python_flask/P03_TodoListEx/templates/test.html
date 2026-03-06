@@ -1,0 +1,38 @@
+<div>
+  <h1>Todoアプリ</h1>
+  <div class="inputArea">
+    <form action="{{url_for('add')}}" method="POST">
+      <input type="text" name="todo" id="todo" placeholder="メモを追加" />
+      <input type="submit" value="add" />
+    </form>
+  </div>
+  <div>
+    <ul>
+      {% for d in data %}
+      <li>
+        {{ d.todo }}
+        <p>更新日時: {{ d.updatetime.strftime("%Y-%m-%d %H:%M") }}</p>
+        <form
+          action="{{ url_for('delete', id=d.id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">削除</button>
+        </form>
+
+        <form
+          action="{{ url_for('edit', id=d.id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">編集</button>
+        </form>
+      
+
+
+
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

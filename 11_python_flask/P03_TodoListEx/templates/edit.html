@@ -1,0 +1,5 @@
+<h2>Todo編集</h2>
+<form action="{{ url_for('edit', id=todo.id) }}" method="POST">
+    <input type="text" name="todo" value="{{ todo.todo }}">
+    <button type="submit">更新</button>
+</form>
