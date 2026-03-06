@@ -1,6 +1,6 @@
 from . import db, func
 
-class Person(db.model):
+class Person(db.Model):
     __tablename__ = "person"
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     name = db.Column(db.String(30))
@@ -12,6 +12,9 @@ class Person(db.model):
     create_at = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
     update_dt = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
     del_flag = db.Column(db.Integer)
+
+    # リレーションの設定(子供を指定)
+    employee = db.relationship("Employee", backref="person", uselist=False)
 
     # 辞書型で取得
     def getData(self):

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>従業員管理システム</title>
+</head>
+<body>
+    {% for d in data %}
+        {% set getdata = d.getData() %}
+        <p>{{getdata.id}} : {{getdata.name}}</p>
+        
+    {% endfor %}
+</body>
+</html>
