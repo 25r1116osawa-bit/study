@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./11_python_flask/20_BluePrint_test/blueprint_sample",
+        "./11_python_flask/P05_FlaskCRUD_BluePrint/app/src/controller"
+    ]
+}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>home</h1>
+<!--Blueprintでつけた名前oneappを使用し、urlfor関数を呼び出している。 -->
+<a href="{{url_for('one_app.show_template')}}">アプリケーション1</a>
+<a href="{{url_for('two_app.show_template')}}">アプリケーション2</a>
+{% endblock %}
