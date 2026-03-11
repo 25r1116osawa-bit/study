@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>ログイン</h2>
+<form method="POST">
+    <div>
+        <label for="username">ユーザー名:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="password">パスワード:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">ログイン</button>
+</form>
+<p>アカウントをお持ちでない場合は<a href="{{ url_for('auth.register') }}">こちら</a>から新規登録してください。</p>
+{% endblock %}

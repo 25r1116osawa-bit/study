@@ -1,13 +1,7 @@
-from flask import Flask
+from flask import Blueprint
 
-app = Flask(__name__)
+app2 = Blueprint("APP2",__name__,url_prefix="/APP2")
 
-from app2 import app2
-app.register_blueprint(app2)
-
-@app.route("/")
+@app2.route("/")
 def index():
-    return "インデックス"
-
-if __name__ == "__main__":
-    app.run(host="localhost", port=8080, debug=True)
+    return "インデックス2"
