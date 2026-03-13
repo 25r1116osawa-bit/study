@@ -18,3 +18,4 @@ class APP2A(MethodView):
         return "インデックスAPP2A POST"
 
 app2.add_url_rule("/A",view_func=APP2A.as_view("APP2A"))
+

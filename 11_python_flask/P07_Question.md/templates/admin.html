@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>メール</th>
+            <th>役割</th>
+            <th>出勤</th>
+            <th>退勤</th>
+            <th>休憩開始</th>
+            <th>休憩終了</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for user in users %}
+            {% for kintai in user.kintais %}
+
+                {% if kintai.rests %}
+                    {% for rest in kintai.rests %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.mail }}</td>
+                        <td>{{ user.role }}</td>
+
+                        <td>{{ kintai.clock_in_datetime }}</td>
+                        <td>{{ kintai.clock_out_datetime }}</td>
+
+                        <td>{{ rest.break_start_time }}</td>
+                        <td>{{ rest.break_end_time }}</td>
+
+                        <td>
+                            <a href="/{{ user.id }}/update" class="btn">更新</a>
+                            <a href="/{{ user.id }}/delete" class="btn btn-danger">削除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                {% else %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.mail }}</td>
+                        <td>{{ user.role }}</td>
+
+                        <td>{{ kintai.clock_in_datetime }}</td>
+                        <td>{{ kintai.clock_out_datetime }}</td>
+
+                        <td colspan="2">休憩なし</td>
+
+                        <td>
+                            <a href="/{{ user.id }}/update" class="btn">更新</a>
+                            <a href="/{{ user.id }}/delete" class="btn btn-danger">削除</a>
+                        </td>
+                    </tr>
+                {% endif %}
+
+            {% endfor %}
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<style>
+    .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .btn:hover {
+        background-color: #2980b9;
+    }
+    .btn-danger {
+        background-color: #e74c3c;
+    }
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+</style>
+{% endblock %}
