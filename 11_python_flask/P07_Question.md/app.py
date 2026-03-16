@@ -158,9 +158,45 @@ def break_end():
 @app.route("/admin", methods=["GET","POST"])
 def admin():
     users = User.query.all()
-    
-
+    print(users)
     return render_template("admin.html",users=users)
+
+
+@app.route("/user", methods=["GET","POST"])
+def user():
+    users = User.query.all()
+    
+    return render_template("user.html",users=users)
+
+
+@app.route("/<int:user_id>/update", methods=["GET","POST"])
+def update(user_id):
+
+    user = User.query.get(user_id)
+
+    if request.method == "POST":
+        user.name = request.form.get('name')
+        user.mail = request.form.get('email')   # ← 修正
+        user.password_hash = request.form.get('password')
+        user.role = request.form.get('role')
+
+        db.session.commit()
+
+        return redirect("/admin")
+
+    return render_template("update.html", user=user)
+
+
+@app.route("/<int:user_id>/delete")
+def delete(user_id):
+
+
+   user = User.query.get(user_id)
+   # 論理削除の書き方
+   # user.is_deleted = True
+   db.session.delete(user)
+   db.session.commit()
+   return redirect('/admin')
 
 
 with app.app_context():

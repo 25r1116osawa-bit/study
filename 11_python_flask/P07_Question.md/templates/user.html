@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>一般ユーザの画面</h1>
+<h2>勤怠管理</h2>
+
+<form method="POST" action="/clock_in">
+    <button type="submit">出勤</button>
+</form>
+
+<form method="POST" action="/break_start">
+    <button type="submit">休憩開始</button>
+</form>
+
+<form method="POST" action="/break_end">
+    <button type="submit">休憩終了</button>
+</form>
+
+<form method="POST" action="/clock_out">
+    <button type="submit">退勤</button>
+</form>
+
+for
+
+{% for user in users %}
+            {% for kintai in user.kintais %}
+
+                {% if kintai.rests %}
+                    {% for rest in kintai.rests %}
+                        {{ user.id }}
+                        {{ user.name }}
+                        {{ user.mail }}
+                        {{ user.role }}
+
+                        {{ kintai.clock_in_datetime }}
+                        {{ kintai.clock_out_datetime }}
+
+                        {{ rest.break_start_time }}
+                        {{ rest.break_end_time }}
+                {% endif %}
+    
+{% endblock %}

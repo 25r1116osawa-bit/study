@@ -5,7 +5,7 @@
 <form method="POST">
     <!-- name="name" の""の中身がapp.pyに渡される。-->
     <label for="name">名前</label>
-    <input type="text" name="name" id="name">
+    <input type="text" name="name" id="name" >
 
     <label for="mail">メールアドレス</label>
     <input type="email" name="email" id="mail">
@@ -26,23 +26,5 @@
 
 </form>
 
-
-<h1>勤怠打刻</h1>
-
-<form method="POST" action="/clock_in">
-    <button type="submit">出勤</button>
-</form>
-
-<form method="POST" action="/break_start">
-    <button type="submit">休憩開始</button>
-</form>
-
-<form method="POST" action="/break_end">
-    <button type="submit">休憩終了</button>
-</form>
-
-<form method="POST" action="/clock_out">
-    <button type="submit">退勤</button>
-</form>
 
 {% endblock %}
