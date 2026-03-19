@@ -1,0 +1,13 @@
+body {
+    margin: 10px;
+    background-color: aliceblue;
+}
+
+h1 {
+    color: lightgray;
+    font-size: 36pt;
+}
+
+p {
+    font-size: 16pt;
+}
