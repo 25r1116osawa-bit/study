@@ -10,3 +10,5 @@ RUN apt-get update && apt-get install -y \
 # Apacheモジュール（Proxy/Rewrite）の有効化
 RUN a2enmod proxy proxy_http rewrite
 
+COPY html/ /var/www/html/
+RUN chown -R www-data:www-data /var/www/html

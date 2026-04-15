@@ -1,0 +1,34 @@
+# DBのデプロイ定義
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.11
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: root_password
+        - name: MARIADB_DATABASE
+          value: wp_db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db  # これがWordPress等からの接続ホスト名になります
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: db
