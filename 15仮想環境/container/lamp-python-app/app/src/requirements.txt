@@ -1,4 +1,0 @@
-flask
-gunicorn
-
-#なんのlibraryを使っているか記載alchemyなど
