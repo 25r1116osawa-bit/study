@@ -15,7 +15,7 @@ spec:
       containers:
       - name: flask
         image: my-flask-app:v1.0
-        imagePullPolicy: Never # ローカルビルドしたイメージを使用
+        imagePullPolicy: IfNotPresent # ローカルビルドしたイメージを使用
         ports:
         - containerPort: 8080
 ---

@@ -11,4 +11,6 @@ RUN apt-get update && apt-get install -y \
 RUN a2enmod proxy proxy_http rewrite
 
 COPY html/ /var/www/html/
+COPY ./conf/000-default.conf /etc/apache2/sites-available/000-default.conf
+
 RUN chown -R www-data:www-data /var/www/html
